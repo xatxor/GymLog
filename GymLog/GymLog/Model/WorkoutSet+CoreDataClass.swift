@@ -1,5 +1,5 @@
 //
-//  Set+CoreDataClass.swift
+//  WorkoutSet+CoreDataClass.swift
 //  GymLog
 //
 //  Created by Вика on 8/14/22.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(Set)
-public class Set: NSManagedObject {
+@objc(WorkoutSet)
+public class WorkoutSet: NSManagedObject {
 
 }

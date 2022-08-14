@@ -5,11 +5,6 @@
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TypeOfExercise" inverseName="exercises" inverseEntity="TypeOfExercise"/>
         <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercise" inverseEntity="Workout"/>
     </entity>
-    <entity name="Set" representedClassName="Set" syncable="YES">
-        <attribute name="reps" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="workout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="sets" inverseEntity="Workout"/>
-    </entity>
     <entity name="TypeOfExercise" representedClassName="TypeOfExercise" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="type" inverseEntity="Exercise"/>
@@ -17,12 +12,17 @@
     <entity name="Workout" representedClassName="Workout" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="exercise" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="workouts" inverseEntity="Exercise"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="workout" inverseEntity="Set"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutSet" inverseName="workout" inverseEntity="WorkoutSet"/>
+    </entity>
+    <entity name="WorkoutSet" representedClassName="WorkoutSet" syncable="YES">
+        <attribute name="reps" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="workout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="sets" inverseEntity="Workout"/>
     </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="88"/>
         <element name="TypeOfExercise" positionX="-54" positionY="0" width="128" height="73"/>
         <element name="Workout" positionX="-36" positionY="9" width="128" height="88"/>
-        <element name="Set" positionX="-27" positionY="45" width="128" height="88"/>
+        <element name="WorkoutSet" positionX="-27" positionY="45" width="128" height="88"/>
     </elements>
 </model>
