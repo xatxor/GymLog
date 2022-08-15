@@ -12,11 +12,14 @@ class ViewController: UIViewController {
     
     var selectedDate = Date()
     
+    var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
+    
     private var calendar: FSCalendar = {
         let calendar = FSCalendar()
         calendar.translatesAutoresizingMaskIntoConstraints = false
         return calendar
     }()
+    
     var calendarHeightConstraint: NSLayoutConstraint!
     
     let showHideButton: UIButton = {
@@ -27,6 +30,12 @@ class ViewController: UIViewController {
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    let tableView: UITableView = {
+        let tb = UITableView()
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        return tb
     }()
     
     func setTitle()->String{
@@ -43,10 +52,12 @@ class ViewController: UIViewController {
         title = setTitle()
         showHideButton.setTitle(setTitle(), for: .normal)
         
-        createCalendar()
+        setupCalendar()
+        
+        setupTableView()
     }
     
-    func createCalendar(){
+    func setupCalendar(){
         swipeAction()
         
         view.addSubview(calendar)
@@ -117,6 +128,25 @@ class ViewController: UIViewController {
             break
         }
     }
+    
+    func setupTableView(){
+        
+        view.addSubview(tableView)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        tableView.clipsToBounds = true
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.register(WorkoutCell.self, forCellReuseIdentifier: "workoutcell")
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: 30),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
 }
 
 extension ViewController: FSCalendarDataSource, FSCalendarDelegate {
@@ -131,3 +161,35 @@ extension ViewController: FSCalendarDataSource, FSCalendarDelegate {
     }
 }
 
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if selectedIndex == indexPath { return 200 }
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "workoutcell", for: indexPath) as! WorkoutCell
+        cell.selectionStyle = .none
+        cell.animate()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath == selectedIndex {
+            selectedIndex = IndexPath(row: -1, section: -1)
+        }
+        else{
+            selectedIndex = indexPath
+        }
+        
+        tableView.beginUpdates()
+        tableView.reloadRows(at: [indexPath], with: .fade)
+        tableView.endUpdates()
+    }
+}

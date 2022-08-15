@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 @objc(Workout)
 public class Workout: NSManagedObject {
