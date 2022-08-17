@@ -10,6 +10,8 @@ import FSCalendar
 
 class ViewController: UIViewController {
     
+    var workouts: [Workout]?
+    
     var selectedDate = Date()
     
     var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
@@ -52,9 +54,15 @@ class ViewController: UIViewController {
         title = setTitle()
         showHideButton.setTitle(setTitle(), for: .normal)
         
+        getWorkouts()
+        
         setupCalendar()
         
         setupTableView()
+    }
+    
+    func getWorkouts(){
+        //
     }
     
     func setupCalendar(){
@@ -169,13 +177,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return self.workouts?.count ?? 0
         return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "workoutcell", for: indexPath) as! WorkoutCell
+        
         cell.selectionStyle = .none
+        //cell.title.text = self.workouts![indexPath.row].exercise?.name
         cell.animate()
+        
         return cell
     }
     
