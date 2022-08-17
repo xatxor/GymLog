@@ -10,44 +10,6 @@ import FSCalendar
 
 class ViewController: UIViewController {
     
-    var workouts: [Workout]?
-    
-    var selectedDate = Date()
-    
-    var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
-    
-    private var calendar: FSCalendar = {
-        let calendar = FSCalendar()
-        calendar.translatesAutoresizingMaskIntoConstraints = false
-        return calendar
-    }()
-    
-    var calendarHeightConstraint: NSLayoutConstraint!
-    
-    let showHideButton: UIButton = {
-        let button = UIButton()
-        
-        button.setTitle("open", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let tableView: UITableView = {
-        let tb = UITableView()
-        tb.translatesAutoresizingMaskIntoConstraints = false
-        return tb
-    }()
-    
-    func setTitle()->String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM"
-        let str = dateFormatter.string(from: selectedDate)
-        
-        return str
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,10 +23,69 @@ class ViewController: UIViewController {
         setupTableView()
     }
     
-    func getWorkouts(){
-        //
+    //MARK: Calendar
+    
+    //выбранная на календаре дата
+    var selectedDate = Date()
+    
+    func setTitle()->String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM"
+        let str = dateFormatter.string(from: selectedDate)
+        
+        return str
     }
     
+    let showHideButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("open", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    //меняем режим отображения календаря (на месяц/на неделю) с помощью кнопки
+    @objc func showHideButtonTapped(){
+        if calendar.scope == .week{
+            calendar.setScope(.month, animated: true)
+        } else {
+            calendar.setScope(.week, animated: true)
+        }
+    }
+    
+    //обнаруживаем свайп вниз/вверх
+    func swipeAction(){
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+        swipeUp.direction = .up
+        calendar.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+        swipeDown.direction = .down
+        calendar.addGestureRecognizer(swipeDown)
+    }
+    
+    //меняем режим отображения календаря (на месяц/на неделю) с помощью свайпа вниз/вверх
+    @objc func handleSwipe(gesture: UISwipeGestureRecognizer){
+        switch gesture.direction {
+        case .up:
+            calendar.setScope(.week, animated: true)
+        case .down:
+            calendar.setScope(.month, animated: true)
+        default:
+            break
+        }
+    }
+    
+    private var calendar: FSCalendar = {
+        let calendar = FSCalendar()
+        calendar.translatesAutoresizingMaskIntoConstraints = false
+        return calendar
+    }()
+    
+    var calendarHeightConstraint: NSLayoutConstraint!
+
     func setupCalendar(){
         swipeAction()
         
@@ -108,33 +129,21 @@ class ViewController: UIViewController {
         ])
     }
     
-    @objc func showHideButtonTapped(){
-        if calendar.scope == .week{
-            calendar.setScope(.month, animated: true)
-        } else {
-            calendar.setScope(.week, animated: true)
-        }
-    }
+    //MARK: Workouts TableView
     
-    func swipeAction(){
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
-        swipeUp.direction = .up
-        calendar.addGestureRecognizer(swipeUp)
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
-        swipeDown.direction = .down
-        calendar.addGestureRecognizer(swipeDown)
-    }
+    var workouts: [Workout]?
     
-    @objc func handleSwipe(gesture: UISwipeGestureRecognizer){
-        switch gesture.direction {
-        case .up:
-            calendar.setScope(.week, animated: true)
-        case .down:
-            calendar.setScope(.month, animated: true)
-        default:
-            break
-        }
+    //выбранная ячейка
+    var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
+    
+    let tableView: UITableView = {
+        let tb = UITableView()
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        return tb
+    }()
+    
+    func getWorkouts(){
+        //
     }
     
     func setupTableView(){
@@ -172,6 +181,7 @@ extension ViewController: FSCalendarDataSource, FSCalendarDelegate {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //если ячейка выбрана, увеличиваем ее высоту
         if selectedIndex == indexPath { return 200 }
         return 60
     }
@@ -199,7 +209,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         else{
             selectedIndex = indexPath
         }
-        
+        //обновляем выбранную ячейку для того чтобы обновилась высота
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .fade)
         tableView.endUpdates()
