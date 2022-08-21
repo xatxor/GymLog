@@ -8,19 +8,75 @@
 import UIKit
 import FSCalendar
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        view.backgroundColor = .white
+        
         title = setTitle()
-        showHideButton.setTitle(setTitle(), for: .normal)
         
         getWorkouts()
         
+        setupButtons()
         setupCalendar()
-        
         setupTableView()
+        setupContainer()
+        setupAddButton()
+        
+        
+    }
+    
+    //MARK: DataButton
+    
+    let dataButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.setTitle("Db", for: .normal)
+        button.backgroundColor = .white
+        
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let settingsButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.setTitle("S", for: .normal)
+        button.backgroundColor = .white
+        
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    func setupButtons(){
+        dataButton.addTarget(self, action: #selector(dataButtonTapped), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItems =
+            [UIBarButtonItem(customView: settingsButton),
+             UIBarButtonItem(customView: dataButton)]
+    }
+    
+    @objc func dataButtonTapped(){
+        let vc = DataViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func settingsButtonTapped(){
+        let vc = SettingsViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     //MARK: Calendar
@@ -46,12 +102,23 @@ class ViewController: UIViewController {
         return button
     }()
     
+    func changeShowHideButtonTitle(){
+        // TODO: добавить анимацию
+        if showHideButton.titleLabel?.text == "open"{
+            showHideButton.setTitle("hide", for: .normal)
+        } else {
+            showHideButton.setTitle("open", for: .normal)
+        }
+    }
+    
     //меняем режим отображения календаря (на месяц/на неделю) с помощью кнопки
     @objc func showHideButtonTapped(){
         if calendar.scope == .week{
             calendar.setScope(.month, animated: true)
+            changeShowHideButtonTitle()
         } else {
             calendar.setScope(.week, animated: true)
+            changeShowHideButtonTitle()
         }
     }
     
@@ -71,8 +138,10 @@ class ViewController: UIViewController {
         switch gesture.direction {
         case .up:
             calendar.setScope(.week, animated: true)
+            changeShowHideButtonTitle()
         case .down:
             calendar.setScope(.month, animated: true)
+            changeShowHideButtonTitle()
         default:
             break
         }
@@ -108,7 +177,7 @@ class ViewController: UIViewController {
         calendar.addConstraint(calendarHeightConstraint)
         
         NSLayoutConstraint.activate([
-            calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
+            calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
             calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
@@ -129,6 +198,64 @@ class ViewController: UIViewController {
         ])
     }
     
+    //MARK: Container for TableView and AddButton
+    
+    let container: UIView = {
+        let view = UIView()
+        
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    func setupContainer(){
+        view.addSubview(container)
+        
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: 0),
+            container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            container.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
+
+    //MARK: AddButton
+    
+    let addButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
+        
+        button.layer.cornerRadius = 20
+        button.layer.borderWidth = 2
+        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    func setupAddButton(){
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+
+        container.addSubview(addButton)
+
+        NSLayoutConstraint.activate([
+            addButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -60),
+            addButton.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -50),
+            addButton.heightAnchor.constraint(equalToConstant: 55),
+            addButton.widthAnchor.constraint(equalToConstant: 55)
+        ])
+    }
+    
+    @objc func addButtonTapped(){
+        let vc = AddWorkoutViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
     //MARK: Workouts TableView
     
     var workouts: [Workout]?
@@ -147,8 +274,7 @@ class ViewController: UIViewController {
     }
     
     func setupTableView(){
-        
-        view.addSubview(tableView)
+        container.addSubview(tableView)
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -158,15 +284,15 @@ class ViewController: UIViewController {
         tableView.register(WorkoutCell.self, forCellReuseIdentifier: "workoutcell")
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: 30),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            tableView.topAnchor.constraint(equalTo: container.topAnchor, constant: 30),
+            tableView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
         ])
     }
 }
 
-extension ViewController: FSCalendarDataSource, FSCalendarDelegate {
+extension MainViewController: FSCalendarDataSource, FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendarHeightConstraint.constant = bounds.height
         view.layoutIfNeeded()
@@ -174,11 +300,11 @@ extension ViewController: FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         selectedDate = date
-        showHideButton.setTitle(setTitle(), for: .normal)
+        title = setTitle()
     }
 }
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //если ячейка выбрана, увеличиваем ее высоту
