@@ -14,6 +14,8 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.backButtonTitle = ""
         
         view.backgroundColor = .white
         
@@ -26,8 +28,6 @@ class MainViewController: UIViewController {
         setupTableView()
         setupContainer()
         setupAddButton()
-        
-        
     }
     
     //MARK: DataButton
@@ -35,12 +35,10 @@ class MainViewController: UIViewController {
     let dataButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("Db", for: .normal)
         button.backgroundColor = .white
-        
-        button.layer.cornerRadius = 10
-        button.layer.borderWidth = 2
-        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+
+        let icon = UIImage(systemName: "book")
+        button.setImage(icon, for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -49,12 +47,10 @@ class MainViewController: UIViewController {
     let settingsButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("S", for: .normal)
         button.backgroundColor = .white
         
-        button.layer.cornerRadius = 10
-        button.layer.borderWidth = 2
-        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        let icon = UIImage(systemName: "wrench")
+        button.setImage(icon, for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -70,7 +66,8 @@ class MainViewController: UIViewController {
     }
     
     @objc func dataButtonTapped(){
-        let vc = DataViewController()
+        let vc = FoldersViewController()
+        vc.title = "Database"
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -224,13 +221,17 @@ class MainViewController: UIViewController {
     
     let addButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Add", for: .normal)
+
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
+        button.tintColor = .black
         
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = 25
         button.layer.borderWidth = 2
-        button.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+        let icon = UIImage(systemName: "plus")
+        button.setImage(icon, for: .normal)
 
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -251,7 +252,9 @@ class MainViewController: UIViewController {
     }
     
     @objc func addButtonTapped(){
-        let vc = AddWorkoutViewController()
+        let vc = FoldersViewController()
+        vc.title = "New workout"
+        vc.isSelectionEnable = true
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -284,7 +287,7 @@ class MainViewController: UIViewController {
         tableView.register(WorkoutCell.self, forCellReuseIdentifier: "workoutcell")
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: container.topAnchor, constant: 30),
+            tableView.topAnchor.constraint(equalTo: container.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
@@ -308,7 +311,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //если ячейка выбрана, увеличиваем ее высоту
-        if selectedIndex == indexPath { return 200 }
+        if selectedIndex == indexPath
+        {
+            let height = 60 + 3*50 + 10 + 10
+            return CGFloat(height)
+        }
         return 60
     }
     

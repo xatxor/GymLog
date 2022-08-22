@@ -10,6 +10,10 @@ import UIKit
 
 class WorkoutCell: UITableViewCell{
     
+    public var isSelectionEnable = false
+    
+    var countOfSets = Int64()
+    
     let title: UILabel = {
         let label = UILabel()
         label.text = "Test title of workout"
@@ -17,14 +21,6 @@ class WorkoutCell: UITableViewCell{
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }()
-    
-    let container: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.clipsToBounds = true
-        v.layer.cornerRadius = 7
-        return v
     }()
     
     let tableView: UITableView = {
@@ -37,14 +33,18 @@ class WorkoutCell: UITableViewCell{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.addSubview(container)
-        container.addSubview(tableView)
-        container.addSubview(title)
+        tintColor = .black
+        
+        let v = UIView()
+        v.backgroundColor = .white
+        selectedBackgroundView = v
+        
+        contentView.addSubview(title)
+        contentView.addSubview(tableView)
         
         setupTableView()
         
         setConstrains()
-
     }
     
     required init?(coder: NSCoder) {
@@ -61,29 +61,38 @@ class WorkoutCell: UITableViewCell{
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(SetCell.self, forCellReuseIdentifier: "setcell")
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func setConstrains(){
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            container.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+            title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            title.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
-            title.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
-            title.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
-            title.heightAnchor.constraint(equalToConstant: 30)
+            tableView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20),
+            tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
+    }
+    
+    let checkmark: UIView = {
+        let v = UIView()
+        v.backgroundColor = .lightGray
+        v.layer.cornerRadius = 10
         
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10)
-        ])
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if isSelectionEnable{
+            super.setSelected(selected, animated: animated)
+            accessoryType = selected ? .checkmark : .none
+        }
     }
 }
 
@@ -97,5 +106,13 @@ extension WorkoutCell: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "setcell", for: indexPath)
         cell.selectionStyle = .none
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }
