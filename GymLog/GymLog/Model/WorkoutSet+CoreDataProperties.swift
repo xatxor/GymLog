@@ -1,8 +1,8 @@
 //
 //  WorkoutSet+CoreDataProperties.swift
-//  GymLog
+//  
 //
-//  Created by Вика on 8/14/22.
+//  Created by Вика on 8/23/22.
 //
 //
 
@@ -16,12 +16,8 @@ extension WorkoutSet {
         return NSFetchRequest<WorkoutSet>(entityName: "WorkoutSet")
     }
 
-    @NSManaged public var weight: Int64
     @NSManaged public var reps: Int64
+    @NSManaged public var weight: Int64
     @NSManaged public var workout: Workout?
-
-}
-
-extension WorkoutSet : Identifiable {
 
 }

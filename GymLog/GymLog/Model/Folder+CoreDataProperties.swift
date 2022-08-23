@@ -1,8 +1,8 @@
 //
-//  TypeOfExercise+CoreDataProperties.swift
-//  GymLog
+//  Folder+CoreDataProperties.swift
+//  
 //
-//  Created by Вика on 8/14/22.
+//  Created by Вика on 8/23/22.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension TypeOfExercise {
+extension Folder {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<TypeOfExercise> {
-        return NSFetchRequest<TypeOfExercise>(entityName: "TypeOfExercise")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Folder> {
+        return NSFetchRequest<Folder>(entityName: "Folder")
     }
 
     @NSManaged public var name: String?
@@ -22,7 +22,7 @@ extension TypeOfExercise {
 }
 
 // MARK: Generated accessors for exercises
-extension TypeOfExercise {
+extension Folder {
 
     @objc(addExercisesObject:)
     @NSManaged public func addToExercises(_ value: Exercise)
@@ -35,9 +35,5 @@ extension TypeOfExercise {
 
     @objc(removeExercises:)
     @NSManaged public func removeFromExercises(_ values: NSSet)
-
-}
-
-extension TypeOfExercise : Identifiable {
 
 }

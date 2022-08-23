@@ -85,10 +85,10 @@ class CoreDataManager{
     }
     
     //MARK: CRUD for Exercises
-    func addExercise(name: String, type: TypeOfExercise){
+    func addExercise(name: String, type: Folder){
         let ex = Exercise(context: self.context)
         ex.name = name
-        ex.type = type
+        ex.folder = type
         
         save()
     }
@@ -101,7 +101,7 @@ class CoreDataManager{
         return exercises
     }
     //получаем все exercises определенного типа
-    func fetchExercises(type: TypeOfExercise)->[Exercise]{
+    func fetchExercises(type: Folder)->[Exercise]{
         var exercises: [Exercise] = []
         do {
             let request = Exercise.fetchRequest() as NSFetchRequest<Exercise>
@@ -121,20 +121,20 @@ class CoreDataManager{
     }
     
     //MARK: CRUD for TypesOfExercises
-    func addTypeOfExercise(name: String){
-        let type: TypeOfExercise = TypeOfExercise(context: self.context)
+    func addFolder(name: String){
+        let type: Folder = Folder(context: self.context)
         type.name = name
         save()
     }
-    func fetchTypesOfExercises()->[TypeOfExercise]{
-        var typesofex: [TypeOfExercise] = []
+    func fetchTypesOfExercises()->[Folder]{
+        var typesofex: [Folder] = []
         do {
-            typesofex = try context.fetch(TypeOfExercise.fetchRequest())
+            typesofex = try context.fetch(Folder.fetchRequest())
         }
         catch { }
         return typesofex
     }
-    func updateTypeOfExercise(type: TypeOfExercise, newname: String){
+    func updateFolder(type: Folder, newname: String){
         type.name = newname
         save()
     }

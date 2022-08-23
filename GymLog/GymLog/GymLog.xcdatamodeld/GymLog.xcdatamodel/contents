@@ -2,12 +2,12 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2026" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Exercise" representedClassName="Exercise" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TypeOfExercise" inverseName="exercises" inverseEntity="TypeOfExercise"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="exercises" inverseEntity="Folder"/>
         <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercise" inverseEntity="Workout"/>
     </entity>
-    <entity name="TypeOfExercise" representedClassName="TypeOfExercise" syncable="YES">
+    <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="type" inverseEntity="Exercise"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="folder" inverseEntity="Exercise"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -21,7 +21,7 @@
     </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="88"/>
-        <element name="TypeOfExercise" positionX="-54" positionY="0" width="128" height="73"/>
+        <element name="Folder" positionX="-54" positionY="0" width="128" height="73"/>
         <element name="Workout" positionX="-36" positionY="9" width="128" height="88"/>
         <element name="WorkoutSet" positionX="-27" positionY="45" width="128" height="88"/>
     </elements>

@@ -1,8 +1,8 @@
 //
 //  Exercise+CoreDataProperties.swift
-//  GymLog
+//  
 //
-//  Created by Вика on 8/14/22.
+//  Created by Вика on 8/23/22.
 //
 //
 
@@ -17,7 +17,7 @@ extension Exercise {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var type: TypeOfExercise?
+    @NSManaged public var folder: Folder?
     @NSManaged public var workouts: NSSet?
 
 }
@@ -36,9 +36,5 @@ extension Exercise {
 
     @objc(removeWorkouts:)
     @NSManaged public func removeFromWorkouts(_ values: NSSet)
-
-}
-
-extension Exercise : Identifiable {
 
 }

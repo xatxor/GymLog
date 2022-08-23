@@ -2,6 +2,30 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Folder+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Folder+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Exercise+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Exercise+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/WorkoutSet+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/WorkoutSet+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Workout+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Workout+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:GymLog.xcodeproj">
    </FileRef>
    <FileRef
