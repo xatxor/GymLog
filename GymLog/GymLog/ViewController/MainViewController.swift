@@ -10,6 +10,9 @@ import FSCalendar
 
 class MainViewController: UIViewController {
     
+    // TODO: добавить под календарем view с оценкой своей тренировки по цветной пятибальной шкале,
+    // потом на календаре отмечать дни цветов соответствующим оценке
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,6 +97,11 @@ class MainViewController: UIViewController {
         
         button.setTitle("open", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 7
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.darkGray.cgColor
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -180,11 +188,6 @@ class MainViewController: UIViewController {
         ])
         
         view.addSubview(showHideButton)
-        
-        showHideButton.backgroundColor = .clear
-        showHideButton.layer.cornerRadius = 7
-        showHideButton.layer.borderWidth = 2
-        showHideButton.layer.borderColor = UIColor.darkGray.cgColor
         
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         

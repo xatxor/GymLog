@@ -14,6 +14,7 @@ class WorkoutCell: UITableViewCell{
     
     var countOfSets = Int64()
     
+    //TODO: добавить возможность многострочного ввода
     let title: UILabel = {
         let label = UILabel()
         label.text = "Test title of workout"

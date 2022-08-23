@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TypeOfExerciseCell: UITableViewCell {
+class FolderCell: UITableViewCell {
 
     let title: UILabel = {
         let label = UILabel()

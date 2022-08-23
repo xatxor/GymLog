@@ -9,6 +9,8 @@ import UIKit
 
 class FoldersViewController: UIViewController {
     
+    // TODO: добавить кнопку добавления exercise -> добавить доп вид в NameSetterViewController для выбора папки
+    
     public var isSelectionEnable = false
 
     override func viewDidLoad() {
@@ -18,7 +20,10 @@ class FoldersViewController: UIViewController {
         
         setupLabels()
         setupTableView()
+        setupAddButton()
     }
+    
+    //MARK: Labels
     
     var countOfTypes = Int64()
     var countOfExercises = Int64()
@@ -64,6 +69,44 @@ class FoldersViewController: UIViewController {
         ])
     }
     
+    //MARK: AddButton
+    
+    let createButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("create new folder", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 7
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.darkGray.cgColor
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    func setupAddButton(){
+        view.addSubview(createButton)
+        
+        createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            createButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0),
+            createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    
+    // Add Folder
+    @objc func createButtonTapped(){
+        let vc = NameSetterViewController()
+        
+        navigationController?.present(vc, animated: true)
+    }
+    
+    //MARK: TableView
+    
     let tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +116,7 @@ class FoldersViewController: UIViewController {
     func setupTableView(){
         view.addSubview(tableView)
         
-        tableView.register(TypeOfExerciseCell.self, forCellReuseIdentifier: "typeofexcell")
+        tableView.register(FolderCell.self, forCellReuseIdentifier: "typeofexcell")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -85,7 +128,7 @@ class FoldersViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: exerciseLabel.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90)
         ])
     }
 }
@@ -95,7 +138,7 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "typeofexcell", for: indexPath) as! TypeOfExerciseCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "typeofexcell", for: indexPath) as! FolderCell
         
         //cell.selectionStyle = .none
         
