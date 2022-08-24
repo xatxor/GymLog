@@ -18,23 +18,65 @@ class FoldersViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        drawDottedLines()
+        
+        updateLabels()
         setupLabels()
         setupTableView()
         setupAddButton()
     }
     
+    //MARK: Dotted Lines
+    
+    func drawDottedLines() {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        shapeLayer.lineWidth = 2
+
+        let path = CGMutablePath()
+        //первая линия
+        path.addLines(between: [CGPoint(x: 20, y: 160 + 15), CGPoint(x: view.frame.width - 20, y: 160 + 15)])
+        shapeLayer.path = path
+        view.layer.addSublayer(shapeLayer)
+        //вторая линия
+        path.addLines(between: [CGPoint(x: 20, y: 160 + 30 + 10 + 15), CGPoint(x: view.frame.width - 20, y: 160 + 30 + 10 + 15)])
+        shapeLayer.path = path
+        view.layer.addSublayer(shapeLayer)
+    }
+    
     //MARK: Labels
     
-    var countOfTypes = Int64()
+    var countOfFolders = Int64()
     var countOfExercises = Int64()
-    var countOfWorkouts = Int64()
     
-    let typesLabel: UILabel = {
+    let firstLineLabel: UILabel = {
         let label = UILabel()
-        label.text = "------------------9 folders------------------"
+        label.text = "--------------------------------------------------"
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .center
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let secondLineLabel: UILabel = {
+        let label = UILabel()
+        label.text = "--------------------------------------------------"
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textAlignment = .center
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let foldersLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textAlignment = .center
+        label.backgroundColor = .white
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -42,30 +84,53 @@ class FoldersViewController: UIViewController {
     
     let exerciseLabel: UILabel = {
         let label = UILabel()
-        label.text = "----------------16 exercises----------------"
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .center
+        label.backgroundColor = .white
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    func updateLabels(){
+        foldersLabel.text = String(countOfFolders) + " folders"
+        exerciseLabel.text = String(countOfExercises) + " exercises"
+    }
+    
     func setupLabels(){
-        view.addSubview(typesLabel)
+        /*view.addSubview(firstLineLabel)
+        view.addSubview(secondLineLabel)
+        
+        firstLineLabel.adjustsFontSizeToFitWidth = true
+        secondLineLabel.adjustsFontSizeToFitWidth = true
+        
+        NSLayoutConstraint.activate([
+            firstLineLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
+            firstLineLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            firstLineLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            firstLineLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            secondLineLabel.topAnchor.constraint(equalTo: firstLineLabel.bottomAnchor, constant: 10),
+            secondLineLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            secondLineLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            secondLineLabel.heightAnchor.constraint(equalToConstant: 30),
+            secondLineLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9)
+        ])*/
+        
+        view.addSubview(foldersLabel)
         view.addSubview(exerciseLabel)
         
         NSLayoutConstraint.activate([
-            typesLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
-            typesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            typesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            typesLabel.heightAnchor.constraint(equalToConstant: 30)
+            foldersLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
+            foldersLabel.heightAnchor.constraint(equalToConstant: 30),
+            foldersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         NSLayoutConstraint.activate([
-            exerciseLabel.topAnchor.constraint(equalTo: typesLabel.bottomAnchor, constant: 10),
-            exerciseLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            exerciseLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            exerciseLabel.heightAnchor.constraint(equalToConstant: 30)
+            exerciseLabel.topAnchor.constraint(equalTo: foldersLabel.bottomAnchor, constant: 10),
+            exerciseLabel.heightAnchor.constraint(equalToConstant: 30),
+            exerciseLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     

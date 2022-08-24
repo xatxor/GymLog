@@ -84,8 +84,13 @@ class MainViewController: UIViewController {
     var selectedDate = Date()
     
     func setTitle()->String{
+        
+        if Calendar.current.isDateInToday(selectedDate) { return "Today" }
+        if Calendar.current.isDateInYesterday(selectedDate) { return "Yesterday" }
+        if Calendar.current.isDateInTomorrow(selectedDate) { return "Tomorrow" }
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM"
+        dateFormatter.dateFormat = "d MMMM"
         let str = dateFormatter.string(from: selectedDate)
         
         return str

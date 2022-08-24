@@ -41,10 +41,13 @@ class DeleteConfirmationViewController: UIViewController {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "This action cannot be undone"
+        label.text = "Training history and statistics will not be saved"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.textColor = .lightGray
+        
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -95,8 +98,8 @@ class DeleteConfirmationViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 35),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50)
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60)
         ])
         
         view.addSubview(cancelButton)
