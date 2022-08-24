@@ -25,7 +25,6 @@ class MainViewController: UIViewController {
         title = setTitle()
         
         getWorkouts()
-        
         setupButtons()
         setupCalendar()
         setupTableView()
@@ -349,5 +348,58 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .fade)
         tableView.endUpdates()
+    }
+    
+    private func handleDelete() {
+    }
+    
+    private func handleStatistics() {
+        let vc = StatisticsViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        //при свайпе скрываем раскрытую ячейку для хорошего отображения анимации
+        if indexPath == selectedIndex {
+            selectedIndex = IndexPath(row: -1, section: -1)
+            //обновляем выбранную ячейку для того чтобы обновилась высота
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+        
+        let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
+            self?.handleStatistics()
+            completionHandler(true)
+        }
+        statisticsAction.backgroundColor = #colorLiteral(red: 0.834133327, green: 0.834133327, blue: 0.834133327, alpha: 1)
+        
+        let configuration = UISwipeActionsConfiguration(actions: [statisticsAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        //при свайпе скрываем раскрытую ячейку для хорошего отображения анимации
+        if indexPath == selectedIndex {
+            selectedIndex = IndexPath(row: -1, section: -1)
+            //обновляем выбранную ячейку для того чтобы обновилась высота
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
+            self?.handleDelete()
+            completionHandler(true)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
     }
 }

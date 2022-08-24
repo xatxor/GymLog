@@ -117,6 +117,59 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if !isSelectionEnable{
+            let vc = StatisticsViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    private func handleStatistics() {
+        let vc = StatisticsViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func handleDelete() {
+        let vc = DeleteConfirmationViewController()
+        navigationController?.present(vc, animated: true)
+    }
+    
+    private func handleEdit() {
+        let vc = NameSetterViewController()
+        navigationController?.present(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if !isSelectionEnable {
+            let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
+                self?.handleStatistics()
+                completionHandler(true)
+            }
+            statisticsAction.backgroundColor = #colorLiteral(red: 0.834133327, green: 0.834133327, blue: 0.834133327, alpha: 1)
+            
+            return UISwipeActionsConfiguration(actions: [statisticsAction])
+        }
+        else { return nil }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
+        if !isSelectionEnable {
+            let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
+                self?.handleDelete()
+                completionHandler(true)
+            }
+            
+            let editAction = UIContextualAction(style: .normal, title: "Edit"){ [weak self] (action, view, completionHandler) in
+                self?.handleEdit()
+                completionHandler(true)
+            }
+            editAction.backgroundColor = #colorLiteral(red: 0.659389317, green: 0.8405041099, blue: 1, alpha: 1)
+            
+            let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+            configuration.performsFirstActionWithFullSwipe = false
+            
+            return configuration
+        }
+        else { return nil }
     }
 }
