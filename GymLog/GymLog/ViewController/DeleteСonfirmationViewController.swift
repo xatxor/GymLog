@@ -21,7 +21,7 @@ class DeleteConfirmationViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         //half screen presentation
-        self.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height / 5 * 3, width: self.view.bounds.width, height: UIScreen.main.bounds.height / 5 * 2)
+        self.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 370, width: self.view.bounds.width, height: 370)
                         self.view.layer.cornerRadius = 20
                         self.view.layer.masksToBounds = true
     }
@@ -87,7 +87,7 @@ class DeleteConfirmationViewController: UIViewController {
     
     func setup(){
         view.addSubview(titleLabel)
-        
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 45),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),

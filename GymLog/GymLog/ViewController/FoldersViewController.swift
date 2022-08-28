@@ -49,28 +49,6 @@ class FoldersViewController: UIViewController {
     var countOfFolders = Int64()
     var countOfExercises = Int64()
     
-    let firstLineLabel: UILabel = {
-        let label = UILabel()
-        label.text = "--------------------------------------------------"
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.textAlignment = .center
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let secondLineLabel: UILabel = {
-        let label = UILabel()
-        label.text = "--------------------------------------------------"
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.textAlignment = .center
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     let foldersLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -99,26 +77,6 @@ class FoldersViewController: UIViewController {
     }
     
     func setupLabels(){
-        /*view.addSubview(firstLineLabel)
-        view.addSubview(secondLineLabel)
-        
-        firstLineLabel.adjustsFontSizeToFitWidth = true
-        secondLineLabel.adjustsFontSizeToFitWidth = true
-        
-        NSLayoutConstraint.activate([
-            firstLineLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 160),
-            firstLineLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            firstLineLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            firstLineLabel.heightAnchor.constraint(equalToConstant: 30)
-        ])
-        NSLayoutConstraint.activate([
-            secondLineLabel.topAnchor.constraint(equalTo: firstLineLabel.bottomAnchor, constant: 10),
-            secondLineLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            secondLineLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            secondLineLabel.heightAnchor.constraint(equalToConstant: 30),
-            secondLineLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9)
-        ])*/
-        
         view.addSubview(foldersLabel)
         view.addSubview(exerciseLabel)
         

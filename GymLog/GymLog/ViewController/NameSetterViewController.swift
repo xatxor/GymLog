@@ -8,20 +8,37 @@
 import UIKit
 
 class NameSetterViewController: UIViewController {
+    
+    var keyboardHeight = CGFloat()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
         
         view.backgroundColor = .white
         
         setup()
     }
     
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            keyboardHeight = keyboardRectangle.height
+            //заново настраиваем границы view уже опираясь на обновленный keyboardHeight
+            viewDidLayoutSubviews()
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         //half screen presentation
-        self.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height / 5 * 2, width: self.view.bounds.width, height: UIScreen.main.bounds.height / 5 * 3)
+        self.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - (keyboardHeight + 190), width: self.view.bounds.width, height: keyboardHeight + 190)
                         self.view.layer.cornerRadius = 20
                         self.view.layer.masksToBounds = true
     }
