@@ -23,7 +23,7 @@ class FoldersViewController: UIViewController {
         updateLabels()
         setupLabels()
         setupTableView()
-        setupAddButton()
+        setupCreateButton()
     }
     
     //MARK: Dotted Lines
@@ -92,7 +92,7 @@ class FoldersViewController: UIViewController {
         ])
     }
     
-    //MARK: AddButton
+    //MARK: CreateButton
     
     let createButton: UIButton = {
         let button = UIButton()
@@ -109,7 +109,7 @@ class FoldersViewController: UIViewController {
         return button
     }()
     
-    func setupAddButton(){
+    func setupCreateButton(){
         view.addSubview(createButton)
         
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)

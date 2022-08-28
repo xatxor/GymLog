@@ -8,7 +8,7 @@
 import UIKit
 import FSCalendar
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, EditSetCellProtocol {
     
     // TODO: добавить под календарем view с оценкой своей тренировки по цветной пятибальной шкале,
     // потом на календаре отмечать дни цветов соответствующим оценке
@@ -300,6 +300,11 @@ class MainViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30)
         ])
     }
+    // open editsets menu
+    func setsTableViewTapped(){
+        let vc = EditSetsViewController()
+        navigationController?.present(vc, animated: true)
+    }
 }
 
 extension MainViewController: FSCalendarDataSource, FSCalendarDelegate {
@@ -335,6 +340,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "workoutcell", for: indexPath) as! WorkoutCell
         
         cell.selectionStyle = .none
+        cell.delegate = self
         //cell.title.text = self.workouts![indexPath.row].exercise?.name
         cell.animate()
         

@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-class SetCell: UITableViewCell{
+class SetCell: UITableViewCell {
     
     var weight: Int = 0
     var reps: Int = 15
-    let space: String = "             x             "
 
     let container: UIView = {
         let v = UIView()
@@ -21,9 +20,32 @@ class SetCell: UITableViewCell{
         return v
     }()
     
-    let weightAndRepsLabel: UILabel = {
+    let weightTextField: UITextField = {
+        let tf = UITextField()
+        tf.tintColor = .black
+        tf.textColor = .black
+        tf.font = UIFont.systemFont(ofSize: 24)
+        tf.textAlignment = .center
+        
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    let repsTextField: UITextField = {
+        let tf = UITextField()
+        tf.tintColor = .black
+        tf.textColor = .black
+        tf.font = UIFont.systemFont(ofSize: 24)
+        tf.textAlignment = .center
+        
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    let xLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.text = "x"
         label.font = UIFont.systemFont(ofSize: 24)
         label.textAlignment = .center
         
@@ -35,15 +57,33 @@ class SetCell: UITableViewCell{
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.addSubview(container)
-        container.addSubview(weightAndRepsLabel)
+        container.addSubview(weightTextField)
+        container.addSubview(repsTextField)
         
-        weightAndRepsLabel.text = String(weight) + space + String(reps)
+        weightTextField.text = String(weight)
+        repsTextField.text = String(reps)
+        
+        container.addSubview(xLabel)
 
+        weightTextField.isUserInteractionEnabled = false
+        repsTextField.isUserInteractionEnabled = false
+        
+        weightTextField.keyboardType = .numberPad
+        repsTextField.keyboardType = .numberPad
+        
+        weightTextField.delegate = self
+        repsTextField.delegate = self
+        
         setConstrains()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func turnOnEditing(){
+        weightTextField.isUserInteractionEnabled = true
+        repsTextField.isUserInteractionEnabled = true
     }
     
     private func setConstrains(){
@@ -55,10 +95,24 @@ class SetCell: UITableViewCell{
         ])
         
         NSLayoutConstraint.activate([
-            weightAndRepsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            weightAndRepsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
-            weightAndRepsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            xLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor)
         ])
         
+        NSLayoutConstraint.activate([
+            weightTextField.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
+            weightTextField.centerXAnchor.constraint(equalTo: xLabel.leadingAnchor, constant: -70),
+        ])
+        
+        NSLayoutConstraint.activate([
+            repsTextField.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
+            repsTextField.centerXAnchor.constraint(equalTo: xLabel.trailingAnchor, constant: 70),
+        ])
+    }
+}
+
+extension SetCell: UITextFieldDelegate {
+    // auto selection of text in textfield
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.selectAll(nil)
     }
 }

@@ -8,7 +8,14 @@
 import Foundation
 import UIKit
 
+// protocol to connect cell with viewcontroller and present another viewcontroller
+protocol EditSetCellProtocol {
+    func setsTableViewTapped()
+}
+
 class WorkoutCell: UITableViewCell{
+    
+    var delegate: EditSetCellProtocol!
     
     public var isSelectionEnable = false
     
@@ -63,6 +70,13 @@ class WorkoutCell: UITableViewCell{
         tableView.dataSource = self
         tableView.register(SetCell.self, forCellReuseIdentifier: "setcell")
         tableView.rowHeight = UITableView.automaticDimension
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tableViewTapped))
+        tableView.addGestureRecognizer(tap)
+    }
+    
+    @objc func tableViewTapped(){
+        self.delegate.setsTableViewTapped()
     }
     
     private func setConstrains(){
