@@ -11,7 +11,79 @@ class FoldersViewController: UIViewController {
     
     // TODO: добавить кнопку добавления exercise -> добавить доп вид в NameSetterViewController для выбора папки
     
+   // MARK: Selection mode
+    
+    public var selectedExercises = [Exercise]()
+    
     public var isSelectionEnable = false
+    
+    private let selectionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Selected: 0"
+        label.textAlignment = .center
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        
+        label.layer.cornerRadius = 7
+        label.layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func updateSelectionLabel(){
+        selectionLabel.text = "Selected: " + String(selectedExercises.count)
+    }
+    
+    private func setupSelectionLabel(){
+        NSLayoutConstraint.activate([
+            selectionLabel.widthAnchor.constraint(equalToConstant: 110),
+            selectionLabel.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        updateSelectionLabel()
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: selectionLabel)]
+    }
+    
+    private func checkIfDoneButtonVisible(){
+        if selectedExercises.count > 0{
+            doneButton.isEnabled = true
+        } else {
+            doneButton.isEnabled = false
+        }
+        doneButton.layoutIfNeeded()
+    }
+    
+    private let doneButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Done", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.setTitleColor(.lightGray, for: .disabled)
+        btn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        
+        btn.layer.cornerRadius = 10
+        btn.layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
+    private func setupDoneButton(){
+        view.addSubview(doneButton)
+        
+        let titleForBtn = isSelectionEnable ? "Done" : ""
+        doneButton.setTitle(titleForBtn, for: .normal)
+        
+        NSLayoutConstraint.activate([
+            doneButton.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -10),
+            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            doneButton.heightAnchor.constraint(equalToConstant: isSelectionEnable ? 40 : 0)
+        ])
+        
+        checkIfDoneButtonVisible()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,8 +94,12 @@ class FoldersViewController: UIViewController {
         
         updateLabels()
         setupLabels()
-        setupTableView()
+        
+        if isSelectionEnable{ setupSelectionLabel() }
+        
         setupCreateButton()
+        setupDoneButton()
+        setupTableView()
         
         getExercises()
         getFolders()
@@ -126,7 +202,7 @@ class FoldersViewController: UIViewController {
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            createButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0),
+            createButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
             createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -179,7 +255,7 @@ class FoldersViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: exerciseLabel.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90)
+            tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: 0)
         ])
     }
 }
@@ -205,7 +281,19 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
         vc.title = folders[indexPath.row].name
         vc.folder = folders[indexPath.row]
         
-        if isSelectionEnable { vc.isSelectionEnable = true}
+        if isSelectionEnable {
+            vc.isSelectionEnable = true
+            vc.selectedExercises = self.selectedExercises
+            
+            vc.completion = { [weak self] selectedItems in
+                DispatchQueue.main.async {
+                    // комбинируем два массива без добавления дубликатов
+                    self?.selectedExercises = selectedItems
+                    self?.checkIfDoneButtonVisible()
+                    self?.updateSelectionLabel()
+                }
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     

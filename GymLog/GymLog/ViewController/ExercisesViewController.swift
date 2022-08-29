@@ -20,11 +20,94 @@ class ExercisesViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        setupTableView()
+        if isSelectionEnable{ setupSelectionLabel() }
+        
         setupAddButton()
+        setupDoneButton()
+        setupTableView()
+        
+        selectRows()
     }
     
+    public var completion: (([Exercise]) -> Void)?
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        completion?(selectedExercises)
+    }
+    
+    // MARK: Selection Mode
+    
+    public var selectedExercises = [Exercise]()
+    
     public var isSelectionEnable = false
+    
+    private let selectionLabel: UILabel = {
+        let label = UILabel()
+
+        label.textAlignment = .center
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        
+        label.layer.cornerRadius = 7
+        label.layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private func updateSelectionLabel(){
+        selectionLabel.text = "Selected: " + String(selectedExercises.count)
+    }
+    
+    private func setupSelectionLabel(){
+        NSLayoutConstraint.activate([
+            selectionLabel.widthAnchor.constraint(equalToConstant: 110),
+            selectionLabel.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        updateSelectionLabel()
+        
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: selectionLabel)]
+    }
+    
+    private func checkIfDoneButtonVisible(){
+        if selectedExercises.count > 0{
+            doneButton.isEnabled = true
+        } else {
+            doneButton.isEnabled = false
+        }
+        doneButton.layoutIfNeeded()
+    }
+    
+    private let doneButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Done", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.setTitleColor(.lightGray, for: .disabled)
+        btn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        
+        btn.layer.cornerRadius = 10
+        btn.layer.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
+    private func setupDoneButton(){
+        view.addSubview(doneButton)
+        
+        let titleForBtn = isSelectionEnable ? "Done" : ""
+        doneButton.setTitle(titleForBtn, for: .normal)
+        
+        NSLayoutConstraint.activate([
+            doneButton.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -10),
+            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            doneButton.heightAnchor.constraint(equalToConstant: isSelectionEnable ? 40 : 0)
+        ])
+        
+        checkIfDoneButtonVisible()
+    }
     
     // для корректного отображения NavigationBar
     private let space: UIView = {
@@ -56,7 +139,7 @@ class ExercisesViewController: UIViewController {
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            createButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0),
+            createButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
             createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -120,8 +203,16 @@ class ExercisesViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: space.bottomAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90)
+            tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: 0)
         ])
+    }
+    
+    private func selectRows(){
+        for item in selectedExercises{
+            if item.folder == self.folder {
+                tableView.selectRow(at: IndexPath(row: exercises.firstIndex(of: item)!, section: 0), animated: true, scrollPosition: .bottom)
+            }
+        }
     }
 }
 extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
@@ -143,9 +234,25 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let ex = exercises[indexPath.row]
+        
         if !isSelectionEnable{
             let vc = StatisticsViewController()
             navigationController?.pushViewController(vc, animated: true)
+        }
+        else {
+            selectedExercises.append(ex)
+            checkIfDoneButtonVisible()
+            updateSelectionLabel()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if isSelectionEnable {
+            let ex = exercises[indexPath.row]
+            selectedExercises.remove(at: selectedExercises.firstIndex(of: ex)!)
+            checkIfDoneButtonVisible()
+            updateSelectionLabel()
         }
     }
     
