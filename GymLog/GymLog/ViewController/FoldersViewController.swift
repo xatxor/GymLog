@@ -28,7 +28,7 @@ class FoldersViewController: UIViewController {
     
     //MARK: Dotted Lines
     
-    func drawDottedLines() {
+    private func drawDottedLines() {
         let shapeLayer = CAShapeLayer()
         shapeLayer.strokeColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         shapeLayer.lineWidth = 2
@@ -46,10 +46,10 @@ class FoldersViewController: UIViewController {
     
     //MARK: Labels
     
-    var countOfFolders = Int64()
-    var countOfExercises = Int64()
+    private var countOfFolders = Int64()
+    private var countOfExercises = Int64()
     
-    let foldersLabel: UILabel = {
+    private let foldersLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -60,7 +60,7 @@ class FoldersViewController: UIViewController {
         return label
     }()
     
-    let exerciseLabel: UILabel = {
+    private let exerciseLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -71,12 +71,12 @@ class FoldersViewController: UIViewController {
         return label
     }()
     
-    func updateLabels(){
+    private func updateLabels(){
         foldersLabel.text = String(countOfFolders) + " folders"
         exerciseLabel.text = String(countOfExercises) + " exercises"
     }
     
-    func setupLabels(){
+    private func setupLabels(){
         view.addSubview(foldersLabel)
         view.addSubview(exerciseLabel)
         
@@ -94,7 +94,7 @@ class FoldersViewController: UIViewController {
     
     //MARK: CreateButton
     
-    let createButton: UIButton = {
+    private let createButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("create new folder", for: .normal)
@@ -109,7 +109,7 @@ class FoldersViewController: UIViewController {
         return button
     }()
     
-    func setupCreateButton(){
+    private func setupCreateButton(){
         view.addSubview(createButton)
         
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -130,13 +130,13 @@ class FoldersViewController: UIViewController {
     
     //MARK: TableView
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         
         tableView.register(FolderCell.self, forCellReuseIdentifier: "typeofexcell")

@@ -8,8 +8,6 @@
 import UIKit
 
 class EditSetsViewController: UIViewController {
-
-    var isFullScreenView: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +27,9 @@ class EditSetsViewController: UIViewController {
         view.endEditing(true)
     }
     
-    let closeButton: UIButton = {
+    // MARK: Close/Done buttons
+    
+    private let closeButton: UIButton = {
         let btn = UIButton()
         
         let icon = UIImage(systemName: "xmark")
@@ -42,7 +42,7 @@ class EditSetsViewController: UIViewController {
         return btn
     }()
     
-    let doneButton: UIButton = {
+    private let doneButton: UIButton = {
         let btn = UIButton()
         
         let icon = UIImage(systemName: "checkmark")
@@ -63,7 +63,7 @@ class EditSetsViewController: UIViewController {
         self.dismiss(animated: true)
     }
 
-    func setupButtons(){
+    private func setupButtons(){
         
         view.addSubview(closeButton)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
@@ -82,14 +82,16 @@ class EditSetsViewController: UIViewController {
         ])
     }
     
-    let tableView: UITableView = {
+    // MARK: TableView
+    
+    private let tableView: UITableView = {
         let tv = UITableView()
         
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         
         tableView.register(SetCell.self, forCellReuseIdentifier: "setcell")
@@ -112,7 +114,7 @@ class EditSetsViewController: UIViewController {
     
     //MARK: CreateButton
     
-    let createButton: UIButton = {
+    private let createButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("+ set", for: .normal)
@@ -125,7 +127,7 @@ class EditSetsViewController: UIViewController {
         return button
     }()
     
-    func setupCreateButton(){
+    private func setupCreateButton(){
         view.addSubview(createButton)
         
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -142,7 +144,7 @@ class EditSetsViewController: UIViewController {
         
     }
     
-    func handleDelete(){
+    private func handleDelete(){
         
     }
 }

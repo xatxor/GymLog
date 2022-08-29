@@ -13,6 +13,8 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     // TODO: добавить под календарем view с оценкой своей тренировки по цветной пятибальной шкале,
     // потом на календаре отмечать дни цветов соответствующим оценке
     
+    // TODO: добавить программы тренировок
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,9 +34,9 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         setupAddButton()
     }
     
-    //MARK: DataButton
+    //MARK: NavBar Buttons
     
-    let dataButton: UIButton = {
+    private let dataButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
@@ -46,7 +48,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return button
     }()
     
-    let settingsButton: UIButton = {
+    private let settingsButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
@@ -58,7 +60,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return button
     }()
 
-    func setupButtons(){
+    private func setupButtons(){
         dataButton.addTarget(self, action: #selector(dataButtonTapped), for: .touchUpInside)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
         
@@ -81,9 +83,9 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     //MARK: Calendar
     
     //выбранная на календаре дата
-    var selectedDate = Date()
+    private var selectedDate = Date()
     
-    func setTitle()->String{
+    private func setTitle()->String{
         
         if Calendar.current.isDateInToday(selectedDate) { return "Today" }
         if Calendar.current.isDateInYesterday(selectedDate) { return "Yesterday" }
@@ -96,7 +98,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return str
     }
     
-    let showHideButton: UIButton = {
+    private let showHideButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("open", for: .normal)
@@ -111,7 +113,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return button
     }()
     
-    func changeShowHideButtonTitle(){
+    private func changeShowHideButtonTitle(){
         // TODO: добавить анимацию
         if showHideButton.titleLabel?.text == "open"{
             showHideButton.setTitle("hide", for: .normal)
@@ -132,7 +134,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     }
     
     //обнаруживаем свайп вниз/вверх
-    func swipeAction(){
+    private func swipeAction(){
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
         swipeUp.direction = .up
         calendar.addGestureRecognizer(swipeUp)
@@ -162,9 +164,9 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return calendar
     }()
     
-    var calendarHeightConstraint: NSLayoutConstraint!
+    private var calendarHeightConstraint: NSLayoutConstraint!
 
-    func setupCalendar(){
+    private func setupCalendar(){
         swipeAction()
         
         view.addSubview(calendar)
@@ -204,7 +206,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     //MARK: Container for TableView and AddButton
     
-    let container: UIView = {
+    private let container: UIView = {
         let view = UIView()
         
         view.clipsToBounds = true
@@ -213,7 +215,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return view
     }()
     
-    func setupContainer(){
+    private func setupContainer(){
         view.addSubview(container)
         
         NSLayoutConstraint.activate([
@@ -226,7 +228,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
 
     //MARK: AddButton
     
-    let addButton: UIButton = {
+    private let addButton: UIButton = {
         let button = UIButton()
 
         button.setTitleColor(.black, for: .normal)
@@ -245,7 +247,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         return button
     }()
     
-    func setupAddButton(){
+    private func setupAddButton(){
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
 
         container.addSubview(addButton)
@@ -268,22 +270,22 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     //MARK: Workouts TableView
     
-    var workouts: [Workout]?
+    private var workouts: [Workout]?
     
     //выбранная ячейка
-    var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
+    private var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tb = UITableView()
         tb.translatesAutoresizingMaskIntoConstraints = false
         return tb
     }()
     
-    func getWorkouts(){
+    private func getWorkouts(){
         //
     }
     
-    func setupTableView(){
+    private func setupTableView(){
         container.addSubview(tableView)
         
         tableView.dataSource = self

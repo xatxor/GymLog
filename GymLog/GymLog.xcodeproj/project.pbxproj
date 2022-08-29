@@ -107,11 +107,11 @@
 				3C882CEC28A9778400EF4638 /* MainViewController.swift */,
 				3C636C6A28AD6E8300EA28C6 /* FoldersViewController.swift */,
 				3C36A19228B2A79D000289C9 /* ExercisesViewController.swift */,
-				3C36A18928B27F05000289C9 /* SettingsViewController.swift */,
 				3C22697428B544BC00A89D4B /* NameSetterViewController.swift */,
 				3C00AE7B28B6555600FBD57B /* DeleteСonfirmationViewController.swift */,
 				3C22697828B565BB00A89D4B /* StatisticsViewController.swift */,
 				3C636C6D28AD716800EA28C6 /* EditSetsViewController.swift */,
+				3C36A18928B27F05000289C9 /* SettingsViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";

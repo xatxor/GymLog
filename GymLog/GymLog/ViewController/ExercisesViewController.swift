@@ -21,7 +21,7 @@ class ExercisesViewController: UIViewController {
     public var isSelectionEnable = false
     
     // для корректного отображения NavigationBar
-    let space: UIView = {
+    private let space: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -29,7 +29,7 @@ class ExercisesViewController: UIViewController {
     
     //MARK: CreateButton
     
-    let createButton: UIButton = {
+    private let createButton: UIButton = {
         let button = UIButton()
         
         button.setTitle("create new exercise", for: .normal)
@@ -44,7 +44,7 @@ class ExercisesViewController: UIViewController {
         return button
     }()
     
-    func setupAddButton(){
+    private func setupAddButton(){
         view.addSubview(createButton)
         
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -64,13 +64,13 @@ class ExercisesViewController: UIViewController {
     
     //MARK: TableView
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(space)
         
         NSLayoutConstraint.activate([

@@ -9,7 +9,7 @@ import UIKit
 
 class NameSetterViewController: UIViewController {
     
-    var keyboardHeight = CGFloat()
+    private var keyboardHeight = CGFloat()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,18 +43,19 @@ class NameSetterViewController: UIViewController {
                         self.view.layer.masksToBounds = true
     }
     
-    
-    let textfield: UITextField = {
+    private let textfield: UITextField = {
         let tf = UITextField()
         tf.font = .systemFont(ofSize: 18, weight: .bold)
         tf.textAlignment = .center
         
         tf.placeholder = "Enter name"
         
+        // отступ от границ слева
         let leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 15.0, height: 2.0))
         tf.leftView = leftView
         tf.leftViewMode = .always
         
+        // отступ от границ справа
         let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 15.0, height: 2.0))
         tf.rightView = leftView
         tf.rightViewMode = .always
@@ -66,7 +67,7 @@ class NameSetterViewController: UIViewController {
         return tf
     }()
     
-    let closeButton: UIButton = {
+    private let closeButton: UIButton = {
         let btn = UIButton()
         
         let icon = UIImage(systemName: "xmark")
@@ -79,7 +80,7 @@ class NameSetterViewController: UIViewController {
         return btn
     }()
     
-    let doneButton: UIButton = {
+    private let doneButton: UIButton = {
         let btn = UIButton()
         
         let icon = UIImage(systemName: "checkmark")
@@ -96,19 +97,20 @@ class NameSetterViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    var returnedName = String()
+    public var returnedName = String()
     
     @objc func doneButtonTapped(){
         self.dismiss(animated: true)
         
     }
     
+    //если пользователь ничего не ввел, вернуть имя невозможно
     @objc func textFieldDidChange(){
         if textfield.text != "" { doneButton.isEnabled = true }
         else { doneButton.isEnabled = false }
     }
 
-    func setup(){
+    private func setup(){
         
         view.addSubview(closeButton)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
@@ -116,7 +118,6 @@ class NameSetterViewController: UIViewController {
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
-            //doneButton.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         view.addSubview(doneButton)
@@ -126,8 +127,7 @@ class NameSetterViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             doneButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            //doneButton.heightAnchor.constraint(equalToConstant: 40)
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
 
         view.addSubview(textfield)

@@ -26,7 +26,7 @@ class DeleteConfirmationViewController: UIViewController {
                         self.view.layer.masksToBounds = true
     }
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         
         label.text = "Are you sure?"
@@ -38,7 +38,7 @@ class DeleteConfirmationViewController: UIViewController {
         return label
     }()
     
-    let descriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         
         label.text = "Training history and statistics will not be saved"
@@ -53,7 +53,7 @@ class DeleteConfirmationViewController: UIViewController {
         return label
     }()
     
-    let cancelButton: UIButton = {
+    private let cancelButton: UIButton = {
         let btn = UIButton()
         
         btn.setTitle("Cancel", for: .normal)
@@ -69,7 +69,7 @@ class DeleteConfirmationViewController: UIViewController {
         return btn
     }()
     
-    let deleteButton: UIButton = {
+    private let deleteButton: UIButton = {
         let btn = UIButton()
         
         btn.setTitle("Delete", for: .normal)
@@ -85,7 +85,7 @@ class DeleteConfirmationViewController: UIViewController {
         return btn
     }()
     
-    func setup(){
+    private func setup(){
         view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
