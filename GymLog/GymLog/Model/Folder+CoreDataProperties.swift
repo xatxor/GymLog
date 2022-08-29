@@ -1,8 +1,8 @@
 //
 //  Folder+CoreDataProperties.swift
-//  
+//  GymLog
 //
-//  Created by Вика on 8/23/22.
+//  Created by Вика on 8/29/22.
 //
 //
 
@@ -35,5 +35,9 @@ extension Folder {
 
     @objc(removeExercises:)
     @NSManaged public func removeFromExercises(_ values: NSSet)
+
+}
+
+extension Folder : Identifiable {
 
 }

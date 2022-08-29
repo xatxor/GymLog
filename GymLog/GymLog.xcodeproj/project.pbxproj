@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		3C00AE7C28B6555600FBD57B /* DeleteСonfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C00AE7B28B6555600FBD57B /* DeleteСonfirmationViewController.swift */; };
-		3C22696A28B53C8500A89D4B /* Workout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696328B53C8500A89D4B /* Workout+CoreDataClass.swift */; };
-		3C22696B28B53C8500A89D4B /* Workout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696728B53C8500A89D4B /* Workout+CoreDataProperties.swift */; };
-		3C22696C28B53C8500A89D4B /* WorkoutSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696628B53C8500A89D4B /* WorkoutSet+CoreDataProperties.swift */; };
-		3C22696D28B53C8500A89D4B /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696828B53C8500A89D4B /* Exercise+CoreDataClass.swift */; };
-		3C22696E28B53C8500A89D4B /* WorkoutSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696528B53C8500A89D4B /* WorkoutSet+CoreDataClass.swift */; };
-		3C22696F28B53C8500A89D4B /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696228B53C8400A89D4B /* Folder+CoreDataProperties.swift */; };
-		3C22697028B53C8500A89D4B /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696428B53C8500A89D4B /* Exercise+CoreDataProperties.swift */; };
-		3C22697128B53C8500A89D4B /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22696928B53C8500A89D4B /* Folder+CoreDataClass.swift */; };
+		3C03705E28BD1F3600921781 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705628BD1F3600921781 /* Folder+CoreDataClass.swift */; };
+		3C03705F28BD1F3600921781 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705728BD1F3600921781 /* Folder+CoreDataProperties.swift */; };
+		3C03706028BD1F3600921781 /* Workout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705828BD1F3600921781 /* Workout+CoreDataClass.swift */; };
+		3C03706128BD1F3600921781 /* Workout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705928BD1F3600921781 /* Workout+CoreDataProperties.swift */; };
+		3C03706228BD1F3600921781 /* WorkoutSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705A28BD1F3600921781 /* WorkoutSet+CoreDataClass.swift */; };
+		3C03706328BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705B28BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift */; };
+		3C03706428BD1F3600921781 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705C28BD1F3600921781 /* Exercise+CoreDataClass.swift */; };
+		3C03706528BD1F3600921781 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C03705D28BD1F3600921781 /* Exercise+CoreDataProperties.swift */; };
 		3C22697528B544BC00A89D4B /* NameSetterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22697428B544BC00A89D4B /* NameSetterViewController.swift */; };
 		3C22697928B565BB00A89D4B /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22697828B565BB00A89D4B /* StatisticsViewController.swift */; };
 		3C36A18A28B27F05000289C9 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C36A18928B27F05000289C9 /* SettingsViewController.swift */; };
@@ -40,14 +40,14 @@
 		08F15E43A87910CCF5F04C87 /* Pods-GymLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymLog.release.xcconfig"; path = "Target Support Files/Pods-GymLog/Pods-GymLog.release.xcconfig"; sourceTree = "<group>"; };
 		2A007E4F7D04C805BC477E55 /* Pods-GymLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymLog.debug.xcconfig"; path = "Target Support Files/Pods-GymLog/Pods-GymLog.debug.xcconfig"; sourceTree = "<group>"; };
 		3C00AE7B28B6555600FBD57B /* DeleteСonfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeleteСonfirmationViewController.swift"; sourceTree = "<group>"; };
-		3C22696228B53C8400A89D4B /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Folder+CoreDataProperties.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Folder+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		3C22696328B53C8500A89D4B /* Workout+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Workout+CoreDataClass.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Workout+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		3C22696428B53C8500A89D4B /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Exercise+CoreDataProperties.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Exercise+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		3C22696528B53C8500A89D4B /* WorkoutSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WorkoutSet+CoreDataClass.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/WorkoutSet+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		3C22696628B53C8500A89D4B /* WorkoutSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WorkoutSet+CoreDataProperties.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/WorkoutSet+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		3C22696728B53C8500A89D4B /* Workout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Workout+CoreDataProperties.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Workout+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		3C22696828B53C8500A89D4B /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Exercise+CoreDataClass.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Exercise+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		3C22696928B53C8500A89D4B /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Folder+CoreDataClass.swift"; path = "/Users/vika/Documents/git/GymLog/GymLog/GymLog/Model/Folder+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		3C03705628BD1F3600921781 /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3C03705728BD1F3600921781 /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3C03705828BD1F3600921781 /* Workout+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3C03705928BD1F3600921781 /* Workout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3C03705A28BD1F3600921781 /* WorkoutSet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutSet+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3C03705B28BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3C03705C28BD1F3600921781 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3C03705D28BD1F3600921781 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3C22697428B544BC00A89D4B /* NameSetterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameSetterViewController.swift; sourceTree = "<group>"; };
 		3C22697828B565BB00A89D4B /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		3C36A18928B27F05000289C9 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -153,14 +153,14 @@
 		3C882D1128A97ECA00EF4638 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3C22696928B53C8500A89D4B /* Folder+CoreDataClass.swift */,
-				3C22696228B53C8400A89D4B /* Folder+CoreDataProperties.swift */,
-				3C22696828B53C8500A89D4B /* Exercise+CoreDataClass.swift */,
-				3C22696428B53C8500A89D4B /* Exercise+CoreDataProperties.swift */,
-				3C22696528B53C8500A89D4B /* WorkoutSet+CoreDataClass.swift */,
-				3C22696628B53C8500A89D4B /* WorkoutSet+CoreDataProperties.swift */,
-				3C22696328B53C8500A89D4B /* Workout+CoreDataClass.swift */,
-				3C22696728B53C8500A89D4B /* Workout+CoreDataProperties.swift */,
+				3C03705628BD1F3600921781 /* Folder+CoreDataClass.swift */,
+				3C03705728BD1F3600921781 /* Folder+CoreDataProperties.swift */,
+				3C03705828BD1F3600921781 /* Workout+CoreDataClass.swift */,
+				3C03705928BD1F3600921781 /* Workout+CoreDataProperties.swift */,
+				3C03705A28BD1F3600921781 /* WorkoutSet+CoreDataClass.swift */,
+				3C03705B28BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift */,
+				3C03705C28BD1F3600921781 /* Exercise+CoreDataClass.swift */,
+				3C03705D28BD1F3600921781 /* Exercise+CoreDataProperties.swift */,
 				3C4E011828AD2E3B0061AACD /* CoreDataManager.swift */,
 				3C36A18D28B2893D000289C9 /* Cell */,
 			);
@@ -290,27 +290,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C7D508028AA868900EBEAE5 /* SetCell.swift in Sources */,
+				3C03705F28BD1F3600921781 /* Folder+CoreDataProperties.swift in Sources */,
 				3C36A19328B2A79D000289C9 /* ExercisesViewController.swift in Sources */,
 				3C22697528B544BC00A89D4B /* NameSetterViewController.swift in Sources */,
+				3C03706228BD1F3600921781 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				3C7D507D28AA80C300EBEAE5 /* WorkoutCell.swift in Sources */,
-				3C22696D28B53C8500A89D4B /* Exercise+CoreDataClass.swift in Sources */,
 				3C22697928B565BB00A89D4B /* StatisticsViewController.swift in Sources */,
+				3C03705E28BD1F3600921781 /* Folder+CoreDataClass.swift in Sources */,
 				3C636C6E28AD716800EA28C6 /* EditSetsViewController.swift in Sources */,
-				3C22696B28B53C8500A89D4B /* Workout+CoreDataProperties.swift in Sources */,
 				3C36A18A28B27F05000289C9 /* SettingsViewController.swift in Sources */,
-				3C22696A28B53C8500A89D4B /* Workout+CoreDataClass.swift in Sources */,
 				3C36A18F28B28C05000289C9 /* FolderCell.swift in Sources */,
+				3C03706528BD1F3600921781 /* Exercise+CoreDataProperties.swift in Sources */,
+				3C03706428BD1F3600921781 /* Exercise+CoreDataClass.swift in Sources */,
 				3C4E011928AD2E3B0061AACD /* CoreDataManager.swift in Sources */,
 				3C882CED28A9778400EF4638 /* MainViewController.swift in Sources */,
 				3C636C6B28AD6E8300EA28C6 /* FoldersViewController.swift in Sources */,
+				3C03706028BD1F3600921781 /* Workout+CoreDataClass.swift in Sources */,
 				3C882CE928A9778400EF4638 /* AppDelegate.swift in Sources */,
-				3C22696F28B53C8500A89D4B /* Folder+CoreDataProperties.swift in Sources */,
 				3C882CF328A9778400EF4638 /* GymLog.xcdatamodeld in Sources */,
-				3C22696C28B53C8500A89D4B /* WorkoutSet+CoreDataProperties.swift in Sources */,
-				3C22697028B53C8500A89D4B /* Exercise+CoreDataProperties.swift in Sources */,
-				3C22697128B53C8500A89D4B /* Folder+CoreDataClass.swift in Sources */,
 				3C00AE7C28B6555600FBD57B /* DeleteСonfirmationViewController.swift in Sources */,
-				3C22696E28B53C8500A89D4B /* WorkoutSet+CoreDataClass.swift in Sources */,
+				3C03706128BD1F3600921781 /* Workout+CoreDataProperties.swift in Sources */,
+				3C03706328BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift in Sources */,
 				3C882CEB28A9778400EF4638 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -24,6 +24,8 @@ class FoldersViewController: UIViewController {
         setupLabels()
         setupTableView()
         setupCreateButton()
+        
+        getFolders()
     }
     
     //MARK: Dotted Lines
@@ -46,8 +48,16 @@ class FoldersViewController: UIViewController {
     
     //MARK: Labels
     
-    private var countOfFolders = Int64()
-    private var countOfExercises = Int64()
+    private var countOfFolders: Int? {
+        didSet{
+            updateLabels()
+        }
+    }
+    private var countOfExercises: Int? {
+        didSet{
+            updateLabels()
+        }
+    }
     
     private let foldersLabel: UILabel = {
         let label = UILabel()
@@ -72,8 +82,8 @@ class FoldersViewController: UIViewController {
     }()
     
     private func updateLabels(){
-        foldersLabel.text = String(countOfFolders) + " folders"
-        exerciseLabel.text = String(countOfExercises) + " exercises"
+        foldersLabel.text = String(countOfFolders ?? 0) + " folders"
+        exerciseLabel.text = String(countOfExercises ?? 0) + " exercises"
     }
     
     private func setupLabels(){
@@ -121,14 +131,27 @@ class FoldersViewController: UIViewController {
         ])
     }
     
-    // Add Folder
+    // Create Folder
     @objc func createButtonTapped(){
         let vc = NameSetterViewController()
-        
+        vc.completion = { [weak self] name in
+            DispatchQueue.main.async {
+                CoreDataManager.shared.addFolder(name: name ?? "Default name")
+                self?.getFolders()
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
     //MARK: TableView
+    
+    private var folders = [Folder]()
+    
+    private func getFolders(){
+        folders = CoreDataManager.shared.fetchFolders()
+        countOfFolders = folders.count
+        tableView.reloadData()
+    }
     
     private let tableView: UITableView = {
         let tv = UITableView()
@@ -157,13 +180,13 @@ class FoldersViewController: UIViewController {
 }
 extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        8
+        return folders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "typeofexcell", for: indexPath) as! FolderCell
         
-        //cell.selectionStyle = .none
+        cell.folder = folders[indexPath.row]
         
         return cell
     }
@@ -179,13 +202,29 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func handleDelete() {
+    private func handleDelete(folder: Folder?) {
         let vc = DeleteConfirmationViewController()
+        vc.completion = { [weak self] isOkay in
+            DispatchQueue.main.async {
+                if isOkay && folder != nil {
+                    CoreDataManager.shared.delete(obj: folder!)
+                    self?.getFolders()
+                }
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
-    private func handleEdit() {
+    private func handleEdit(folder: Folder?) {
         let vc = NameSetterViewController()
+        vc.completion = { [weak self] name in
+            DispatchQueue.main.async {
+                if folder != nil{
+                    CoreDataManager.shared.updateFolder(folder: folder!, newname: name ?? "Default name")
+                    self?.getFolders()
+                }
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
@@ -193,12 +232,12 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
         
         if !isSelectionEnable {
             let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
-                self?.handleDelete()
+                self?.handleDelete(folder: self?.folders[indexPath.row])
                 completionHandler(true)
             }
             
             let editAction = UIContextualAction(style: .normal, title: "Edit"){ [weak self] (action, view, completionHandler) in
-                self?.handleEdit()
+                self?.handleEdit(folder: self?.folders[indexPath.row])
                 completionHandler(true)
             }
             editAction.backgroundColor = #colorLiteral(red: 0.659389317, green: 0.8405041099, blue: 1, alpha: 1)

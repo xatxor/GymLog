@@ -9,6 +9,8 @@ import UIKit
 
 class NameSetterViewController: UIViewController {
     
+    // TODO: в placeholder писать значение старого имени для случаев, когда этот vc используется для обновления имени а не для его установки
+    
     private var keyboardHeight = CGFloat()
 
     override func viewDidLoad() {
@@ -97,11 +99,10 @@ class NameSetterViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    public var returnedName = String()
-    
+    public var completion: ((String?) -> Void)?
     @objc func doneButtonTapped(){
+        completion?(textfield.text)
         self.dismiss(animated: true)
-        
     }
     
     //если пользователь ничего не ввел, вернуть имя невозможно

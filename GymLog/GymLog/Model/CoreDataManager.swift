@@ -11,6 +11,10 @@ import CoreData
 
 class CoreDataManager{
     
+    //паттерн одиночка
+    static let shared = CoreDataManager()
+    private init() {}
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     //MARK: CRUD for WorkoutSets
@@ -120,13 +124,13 @@ class CoreDataManager{
         save()
     }
     
-    //MARK: CRUD for TypesOfExercises
+    //MARK: CRUD for Folders
     func addFolder(name: String){
         let type: Folder = Folder(context: self.context)
         type.name = name
         save()
     }
-    func fetchTypesOfExercises()->[Folder]{
+    func fetchFolders()->[Folder]{
         var typesofex: [Folder] = []
         do {
             typesofex = try context.fetch(Folder.fetchRequest())
@@ -134,8 +138,8 @@ class CoreDataManager{
         catch { }
         return typesofex
     }
-    func updateFolder(type: Folder, newname: String){
-        type.name = newname
+    func updateFolder(folder: Folder, newname: String){
+        folder.name = newname
         save()
     }
     

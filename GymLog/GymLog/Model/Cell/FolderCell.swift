@@ -10,14 +10,24 @@ import UIKit
 
 class FolderCell: UITableViewCell {
 
+    public var folder: Folder? {
+        didSet{
+            updateTitle()
+        }
+    }
+    
     let title: UILabel = {
         let label = UILabel()
-        label.text = "Exercises type"
+        label.text = "folder"
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private func updateTitle(){
+        title.text = folder?.name ?? "def"
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -1,8 +1,8 @@
 //
 //  WorkoutSet+CoreDataProperties.swift
-//  
+//  GymLog
 //
-//  Created by Вика on 8/23/22.
+//  Created by Вика on 8/29/22.
 //
 //
 
@@ -19,5 +19,9 @@ extension WorkoutSet {
     @NSManaged public var reps: Int64
     @NSManaged public var weight: Int64
     @NSManaged public var workout: Workout?
+
+}
+
+extension WorkoutSet : Identifiable {
 
 }

@@ -125,11 +125,15 @@ class DeleteConfirmationViewController: UIViewController {
         ])
     }
     
+    public var completion: ((Bool) -> Void)?
+    
     @objc func cancelButtonTapped(){
+        completion?(false)
         self.dismiss(animated: true)
     }
     
     @objc func deleteButtonTapped(){
+        completion?(true)
         self.dismiss(animated: true)
     }
 }
