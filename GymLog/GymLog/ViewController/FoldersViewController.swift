@@ -291,6 +291,8 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
                     self?.selectedExercises = selectedItems
                     self?.checkIfDoneButtonVisible()
                     self?.updateSelectionLabel()
+                    self?.getExercises()
+                    self?.updateLabels()
                 }
             }
         }
