@@ -155,12 +155,12 @@
 			children = (
 				3C03705628BD1F3600921781 /* Folder+CoreDataClass.swift */,
 				3C03705728BD1F3600921781 /* Folder+CoreDataProperties.swift */,
+				3C03705C28BD1F3600921781 /* Exercise+CoreDataClass.swift */,
+				3C03705D28BD1F3600921781 /* Exercise+CoreDataProperties.swift */,
 				3C03705828BD1F3600921781 /* Workout+CoreDataClass.swift */,
 				3C03705928BD1F3600921781 /* Workout+CoreDataProperties.swift */,
 				3C03705A28BD1F3600921781 /* WorkoutSet+CoreDataClass.swift */,
 				3C03705B28BD1F3600921781 /* WorkoutSet+CoreDataProperties.swift */,
-				3C03705C28BD1F3600921781 /* Exercise+CoreDataClass.swift */,
-				3C03705D28BD1F3600921781 /* Exercise+CoreDataProperties.swift */,
 				3C4E011828AD2E3B0061AACD /* CoreDataManager.swift */,
 				3C36A18D28B2893D000289C9 /* Cell */,
 			);

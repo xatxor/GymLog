@@ -101,7 +101,7 @@ class NameSetterViewController: UIViewController {
     
     public var completion: ((String?) -> Void)?
     @objc func doneButtonTapped(){
-        completion?(textfield.text)
+        completion?(textfield.text?.trimmingCharacters(in: .whitespacesAndNewlines))
         self.dismiss(animated: true)
     }
     

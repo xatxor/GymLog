@@ -25,6 +25,7 @@ class FoldersViewController: UIViewController {
         setupTableView()
         setupCreateButton()
         
+        getExercises()
         getFolders()
     }
     
@@ -147,6 +148,10 @@ class FoldersViewController: UIViewController {
     
     private var folders = [Folder]()
     
+    private func getExercises(){
+        countOfExercises = CoreDataManager.shared.fetchExercises().count
+    }
+    
     private func getFolders(){
         folders = CoreDataManager.shared.fetchFolders()
         countOfFolders = folders.count
@@ -197,7 +202,9 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExercisesViewController()
-        vc.title = "Database"
+        vc.title = folders[indexPath.row].name
+        vc.folder = folders[indexPath.row]
+        
         if isSelectionEnable { vc.isSelectionEnable = true}
         navigationController?.pushViewController(vc, animated: true)
     }

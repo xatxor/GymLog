@@ -89,10 +89,10 @@ class CoreDataManager{
     }
     
     //MARK: CRUD for Exercises
-    func addExercise(name: String, type: Folder){
+    func addExercise(name: String, folder: Folder){
         let ex = Exercise(context: self.context)
         ex.name = name
-        ex.folder = type
+        ex.folder = folder
         
         save()
     }
@@ -105,14 +105,13 @@ class CoreDataManager{
         return exercises
     }
     //получаем все exercises определенного типа
-    func fetchExercises(type: Folder)->[Exercise]{
+    func fetchExercises(folder: Folder)->[Exercise]{
         var exercises: [Exercise] = []
         do {
             let request = Exercise.fetchRequest() as NSFetchRequest<Exercise>
             
-            // TODO: написать предикат для того чтобы вытаскивать нужные объекты
-            //let pred = NSPredicate(format: "", arguments: )
-            //request.predicate = pred
+            let pred = NSPredicate(format: "folder == %@", folder)
+            request.predicate = pred
             
             exercises = try context.fetch(request)
         }
@@ -126,17 +125,17 @@ class CoreDataManager{
     
     //MARK: CRUD for Folders
     func addFolder(name: String){
-        let type: Folder = Folder(context: self.context)
-        type.name = name
+        let folder: Folder = Folder(context: self.context)
+        folder.name = name
         save()
     }
     func fetchFolders()->[Folder]{
-        var typesofex: [Folder] = []
+        var folder: [Folder] = []
         do {
-            typesofex = try context.fetch(Folder.fetchRequest())
+            folder = try context.fetch(Folder.fetchRequest())
         }
         catch { }
-        return typesofex
+        return folder
     }
     func updateFolder(folder: Folder, newname: String){
         folder.name = newname

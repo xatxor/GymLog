@@ -8,7 +8,13 @@
 import UIKit
 
 class ExercisesViewController: UIViewController {
-
+    
+    public var folder: Folder? {
+        didSet{
+            getExercises()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,10 +65,27 @@ class ExercisesViewController: UIViewController {
     // Add Folder
     @objc func createButtonTapped(){
         let vc = NameSetterViewController()
+        vc.completion = { [weak self] name in
+            DispatchQueue.main.async {
+                if self?.folder != nil {
+                    CoreDataManager.shared.addExercise(name: name ?? "Default name", folder: (self?.folder)!)
+                    self?.getExercises()
+                }
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
     //MARK: TableView
+    
+    private var exercises = [Exercise]()
+    
+    private func getExercises(){
+        if folder != nil {
+            exercises = CoreDataManager.shared.fetchExercises(folder: self.folder!)
+            tableView.reloadData()
+        }
+    }
     
     private let tableView: UITableView = {
         let tv = UITableView()
@@ -103,12 +126,15 @@ class ExercisesViewController: UIViewController {
 }
 extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        8
+        return exercises.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "workoutcell", for: indexPath) as! WorkoutCell
         if isSelectionEnable { cell.isSelectionEnable = true }
+        
+        cell.exercise = exercises[indexPath.row]
+        
         return cell
     }
     
@@ -123,25 +149,41 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
         }
     }
     
-    private func handleStatistics() {
+    private func handleStatistics(exercise: Exercise?) {
         let vc = StatisticsViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func handleDelete() {
+    private func handleDelete(exercise: Exercise?) {
         let vc = DeleteConfirmationViewController()
+        vc.completion = { [weak self] isOkay in
+            DispatchQueue.main.async {
+                if isOkay && exercise != nil {
+                    CoreDataManager.shared.delete(obj: exercise!)
+                    self?.getExercises()
+                }
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
-    private func handleEdit() {
+    private func handleEdit(exercise: Exercise?) {
         let vc = NameSetterViewController()
+        vc.completion = { [weak self] name in
+            DispatchQueue.main.async {
+                if exercise != nil{
+                    CoreDataManager.shared.updateExercise(ex: exercise!, newname: name ?? "Default name")
+                    self?.getExercises()
+                }
+            }
+        }
         navigationController?.present(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if !isSelectionEnable {
             let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
-                self?.handleStatistics()
+                self?.handleStatistics(exercise: self?.exercises[indexPath.row])
                 completionHandler(true)
             }
             statisticsAction.backgroundColor = #colorLiteral(red: 0.834133327, green: 0.834133327, blue: 0.834133327, alpha: 1)
@@ -155,12 +197,12 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
         
         if !isSelectionEnable {
             let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
-                self?.handleDelete()
+                self?.handleDelete(exercise: self?.exercises[indexPath.row])
                 completionHandler(true)
             }
             
             let editAction = UIContextualAction(style: .normal, title: "Edit"){ [weak self] (action, view, completionHandler) in
-                self?.handleEdit()
+                self?.handleEdit(exercise: self?.exercises[indexPath.row])
                 completionHandler(true)
             }
             editAction.backgroundColor = #colorLiteral(red: 0.659389317, green: 0.8405041099, blue: 1, alpha: 1)
