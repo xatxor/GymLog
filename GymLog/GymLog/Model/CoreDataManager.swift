@@ -61,8 +61,9 @@ class CoreDataManager{
             let workout: Workout = Workout(context: self.context)
             workout.exercise = ex
             workout.date = date
+            
+            save()
         }
-        save()
     }
     func fetchWorkouts()->[Workout]{
         var workouts: [Workout] = []
@@ -78,9 +79,15 @@ class CoreDataManager{
         do {
             let request = Workout.fetchRequest() as NSFetchRequest<Workout>
             
-            // TODO: написать предикат для того чтобы вытаскивать объекты с нужной датой
-            //let pred = NSPredicate(format: "", arguments: )
-            //request.predicate = pred
+            var calendar = Calendar.current
+            calendar.timeZone = NSTimeZone.local
+            
+            let dateFrom = calendar.startOfDay(for: date) // eg. 2016-10-10 00:00:00
+            let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom)
+            
+            let pred = NSPredicate(format: "date >= %@ AND date < %@", dateFrom as NSDate, dateTo! as NSDate)
+            
+            request.predicate = pred
             
             workouts = try context.fetch(request)
         }

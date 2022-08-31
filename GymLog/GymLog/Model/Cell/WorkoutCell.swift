@@ -69,12 +69,6 @@ class WorkoutCell: UITableViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func animate(){
-        UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.8, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.contentView.layoutIfNeeded()
-        })
-    }
-    
     private func setupTableView(){
         tableView.delegate = self
         tableView.dataSource = self

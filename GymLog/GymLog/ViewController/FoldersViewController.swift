@@ -15,6 +15,8 @@ class FoldersViewController: UIViewController {
     
     public var selectedExercises = [Exercise]()
     
+    public var selectedDate = Date()
+    
     public var isSelectionEnable = false
     
     private let selectionLabel: UILabel = {
@@ -75,6 +77,8 @@ class FoldersViewController: UIViewController {
         let titleForBtn = isSelectionEnable ? "Done" : ""
         doneButton.setTitle(titleForBtn, for: .normal)
         
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
             doneButton.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -10),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -83,6 +87,12 @@ class FoldersViewController: UIViewController {
         ])
         
         checkIfDoneButtonVisible()
+    }
+    
+    @objc func doneButtonTapped(){
+        CoreDataManager.shared.addWorkouts(exercises: selectedExercises, date: selectedDate)
+        NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
+        navigationController?.popToRootViewController(animated: true)
     }
 
     override func viewDidLoad() {
@@ -280,17 +290,24 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
         let vc = ExercisesViewController()
         vc.title = folders[indexPath.row].name
         vc.folder = folders[indexPath.row]
+        vc.selectedDate = self.selectedDate
         
         if isSelectionEnable {
             vc.isSelectionEnable = true
             vc.selectedExercises = self.selectedExercises
-            
             vc.completion = { [weak self] selectedItems in
                 DispatchQueue.main.async {
                     // комбинируем два массива без добавления дубликатов
                     self?.selectedExercises = selectedItems
                     self?.checkIfDoneButtonVisible()
                     self?.updateSelectionLabel()
+                    self?.getExercises()
+                    self?.updateLabels()
+                }
+            }
+        } else {
+            vc.completion = { [weak self] selectedItems in
+                DispatchQueue.main.async {
                     self?.getExercises()
                     self?.updateLabels()
                 }

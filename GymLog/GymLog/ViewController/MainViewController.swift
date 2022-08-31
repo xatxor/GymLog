@@ -15,8 +15,12 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     // TODO: добавить программы тренировок
     
+    // TODO: добавить анимации ко всем кнопкам
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadWorkouts), name: NSNotification.Name("reloadWorkouts"), object: nil)
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .black
@@ -24,7 +28,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         
         view.backgroundColor = .white
         
-        title = setTitle()
+        setTitle()
         
         getWorkouts()
         setupButtons()
@@ -85,17 +89,19 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     //выбранная на календаре дата
     private var selectedDate = Date()
     
-    private func setTitle()->String{
+    private func setTitle(){
         
-        if Calendar.current.isDateInToday(selectedDate) { return "Today" }
-        if Calendar.current.isDateInYesterday(selectedDate) { return "Yesterday" }
-        if Calendar.current.isDateInTomorrow(selectedDate) { return "Tomorrow" }
+        let str: String
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d MMMM"
-        let str = dateFormatter.string(from: selectedDate)
-        
-        return str
+        if Calendar.current.isDateInToday(selectedDate) { str = "Today" }
+        else if Calendar.current.isDateInYesterday(selectedDate) { str = "Yesterday" }
+        else if Calendar.current.isDateInTomorrow(selectedDate) { str = "Tomorrow" }
+        else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d MMMM"
+            str = dateFormatter.string(from: selectedDate)
+        }
+        title = str
     }
     
     private let showHideButton: UIButton = {
@@ -264,6 +270,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         let vc = FoldersViewController()
         vc.title = "New workout"
         vc.isSelectionEnable = true
+        vc.selectedDate = self.selectedDate
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -282,10 +289,17 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     }()
     
     private func getWorkouts(){
-        //
+        workouts = CoreDataManager.shared.fetchWorkouts(date: selectedDate)
+        tableView.reloadData()
+    }
+    
+    @objc func reloadWorkouts(){
+        getWorkouts()
     }
     
     private func setupTableView(){
+        getWorkouts()
+        
         container.addSubview(tableView)
         
         tableView.dataSource = self
@@ -317,7 +331,8 @@ extension MainViewController: FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         selectedDate = date
-        title = setTitle()
+        getWorkouts()
+        setTitle()
     }
 }
 
@@ -334,8 +349,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return self.workouts?.count ?? 0
-        return 3
+        return self.workouts?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -343,8 +357,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.selectionStyle = .none
         cell.delegate = self
-        //cell.title.text = self.workouts![indexPath.row].exercise?.name
-        cell.animate()
+        
+        cell.exercise = self.workouts?[indexPath.row].exercise
         
         return cell
     }
@@ -363,7 +377,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.endUpdates()
     }
     
-    private func handleDelete() {
+    private func handleDelete(workout: Workout?) {
+        if workout != nil{
+            CoreDataManager.shared.delete(obj: workout!)
+        }
+        getWorkouts()
     }
     
     private func handleStatistics() {
@@ -406,7 +424,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
-            self?.handleDelete()
+            self?.handleDelete(workout: self?.workouts?[indexPath.row])
             completionHandler(true)
         }
         
