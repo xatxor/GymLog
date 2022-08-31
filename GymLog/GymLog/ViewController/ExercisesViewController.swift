@@ -276,8 +276,14 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
         vc.completion = { [weak self] isOkay in
             DispatchQueue.main.async {
                 if isOkay && exercise != nil {
+                    let workots = CoreDataManager.shared.fetchWorkouts(exercise: exercise!)
+                    for w in workots{
+                        CoreDataManager.shared.deleteSetsWithWorkout(workout: w)
+                    }
+                    CoreDataManager.shared.delete(array: workots)
                     CoreDataManager.shared.delete(obj: exercise!)
                     self?.getExercises()
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 }
             }
         }
@@ -291,6 +297,7 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
                 if exercise != nil{
                     CoreDataManager.shared.updateExercise(ex: exercise!, newname: name ?? "Default name")
                     self?.getExercises()
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 }
             }
         }

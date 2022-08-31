@@ -11,6 +11,8 @@ import CoreData
 
 class CoreDataManager{
     
+    // TODO: добавить обработчики ошибок
+    
     //паттерн одиночка
     static let shared = CoreDataManager()
     private init() {}
@@ -40,9 +42,8 @@ class CoreDataManager{
         do {
             let request = WorkoutSet.fetchRequest() as NSFetchRequest<WorkoutSet>
             
-            // TODO: написать предикат для того чтобы вытаскивать нужные объекты
-            //let pred = NSPredicate(format: "", arguments: )
-            //request.predicate = pred
+            let pred = NSPredicate(format: "workout == %@", workout)
+            request.predicate = pred
             
             sets = try context.fetch(request)
         }
@@ -69,6 +70,19 @@ class CoreDataManager{
         var workouts: [Workout] = []
         do {
             workouts = try context.fetch(Workout.fetchRequest())
+        }
+        catch { }
+        return workouts
+    }
+    func fetchWorkouts(exercise: Exercise)->[Workout]{
+        var workouts: [Workout] = []
+        do {
+            let request = Workout.fetchRequest() as NSFetchRequest<Workout>
+            
+            let pred = NSPredicate(format: "exercise == %@", exercise)
+            request.predicate = pred
+            
+            workouts = try context.fetch(request)
         }
         catch { }
         return workouts
@@ -149,10 +163,45 @@ class CoreDataManager{
         save()
     }
     
-    //MARK: delete any object
+    //MARK: delete functions
     func delete(obj: NSManagedObject){
         context.delete(obj)
         save()
+    }
+    
+    func delete(array: [NSManagedObject]){
+        for item in array{
+            delete(obj: item)
+        }
+    }
+    
+    func deleteAll(){
+        let folders = fetchFolders()
+        delete(array: folders)
+        
+        let exercises = fetchExercises()
+        delete(array: exercises)
+        
+        let workouts = fetchWorkouts()
+        delete(array: workouts)
+        
+        let sets = fetchWorkoutSets()
+        delete(array: sets)
+    }
+    
+    func deleteExercisesWithFolder(folder: Folder){
+        let exercises = fetchExercises(folder: folder)
+        delete(array: exercises)
+    }
+    
+    func deleteWorkoutsWithExercise(exercise: Exercise){
+        let workouts = fetchWorkouts(exercise: exercise)
+        delete(array: workouts)
+    }
+    
+    func deleteSetsWithWorkout(workout: Workout){
+        let sets = fetchWorkoutSets(workout: workout)
+        delete(array: sets)
     }
     
     //MARK: save all updates

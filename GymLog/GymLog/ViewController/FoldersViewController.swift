@@ -321,8 +321,18 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
         vc.completion = { [weak self] isOkay in
             DispatchQueue.main.async {
                 if isOkay && folder != nil {
+                    let exes = CoreDataManager.shared.fetchExercises(folder: folder!)
+                    for ex in exes{
+                        let workots = CoreDataManager.shared.fetchWorkouts(exercise: ex)
+                        for w in workots{
+                            CoreDataManager.shared.deleteSetsWithWorkout(workout: w)
+                        }
+                        CoreDataManager.shared.delete(array: workots)
+                    }
+                    CoreDataManager.shared.delete(array: exes)
                     CoreDataManager.shared.delete(obj: folder!)
                     self?.getFolders()
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 }
             }
         }
@@ -336,6 +346,7 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
                 if folder != nil{
                     CoreDataManager.shared.updateFolder(folder: folder!, newname: name ?? "Default name")
                     self?.getFolders()
+                    NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 }
             }
         }

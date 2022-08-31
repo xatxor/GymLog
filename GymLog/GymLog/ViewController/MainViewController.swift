@@ -17,6 +17,8 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     // TODO: добавить анимации ко всем кнопкам
     
+    // TODO: может добавить свайпы удаления/редактирования даже при добавлении workout ???
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -379,6 +381,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     private func handleDelete(workout: Workout?) {
         if workout != nil{
+            CoreDataManager.shared.deleteSetsWithWorkout(workout: workout!)
             CoreDataManager.shared.delete(obj: workout!)
         }
         getWorkouts()
