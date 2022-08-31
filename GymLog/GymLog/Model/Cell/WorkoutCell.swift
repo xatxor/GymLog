@@ -10,7 +10,7 @@ import UIKit
 
 // protocol to connect cell with viewcontroller and present another viewcontroller
 protocol EditSetCellProtocol {
-    func setsTableViewTapped()
+    func setsTableViewTapped(workout: Workout?)
 }
 
 class WorkoutCell: UITableViewCell{
@@ -19,16 +19,71 @@ class WorkoutCell: UITableViewCell{
     
     public var isSelectionEnable = false
     
-    var countOfSets = Int64()
-    
     public var exercise: Exercise? {
         didSet{
             updateTitle()
         }
     }
     
+    public var workout: Workout?{
+        didSet{
+            getSets()
+        }
+    }
+    
+    public var setsWorkout: [WorkoutSet]?
+    
+    private func getSets(){
+        if workout != nil {
+            setsWorkout = CoreDataManager.shared.fetchWorkoutSets(workout: workout!)
+            tableView.layoutIfNeeded()
+            tableView.reloadData()
+            checkCreateButtonVisibility()
+        }
+    }
+    
     private func updateTitle(){
         title.text = exercise?.name ?? "def"
+    }
+    
+    private let createButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("+ set", for: .normal)
+        button.setTitleColor(#colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), for: .normal)
+        
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.layer.cornerRadius = 10
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private func setupCreateButton(){
+        contentView.addSubview(createButton)
+        
+        createButton.isHidden = true
+
+        contentView.clipsToBounds = true
+        
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(tableViewTapped))
+        createButton.addTarget(self, action: #selector(tableViewTapped), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            createButton.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0),
+            createButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
+            createButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
+            createButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    private func checkCreateButtonVisibility(){
+        if setsWorkout?.count == 0 {
+            createButton.isHidden = false
+        } else {
+            createButton.isHidden = true
+        }
+        createButton.layoutIfNeeded()
     }
     
     //TODO: добавить возможность многострочного ввода
@@ -60,6 +115,8 @@ class WorkoutCell: UITableViewCell{
         contentView.addSubview(title)
         contentView.addSubview(tableView)
         
+        setupCreateButton()
+        
         setupTableView()
         
         setConstrains()
@@ -77,10 +134,14 @@ class WorkoutCell: UITableViewCell{
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(tableViewTapped))
         tableView.addGestureRecognizer(tap)
+
+        title.text = String(setsWorkout?.count ?? 0)
+        
+        getSets()
     }
     
     @objc func tableViewTapped(){
-        self.delegate.setsTableViewTapped()
+        self.delegate.setsTableViewTapped(workout: self.workout)
     }
     
     private func setConstrains(){
@@ -96,6 +157,8 @@ class WorkoutCell: UITableViewCell{
             tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
+
+        title.text = String(setsWorkout?.count ?? 0)
     }
     
     let checkmark: UIView = {
@@ -118,12 +181,15 @@ class WorkoutCell: UITableViewCell{
 extension WorkoutCell: UITableViewDelegate, UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return setsWorkout?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "setcell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "setcell", for: indexPath) as! SetCell
         cell.selectionStyle = .none
+        
+        // здесь вылезает ошибка
+        cell.setWorkout = setsWorkout?[indexPath.row]
         return cell
     }
     

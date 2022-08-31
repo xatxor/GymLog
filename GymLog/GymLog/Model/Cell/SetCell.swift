@@ -10,17 +10,23 @@ import UIKit
 
 class SetCell: UITableViewCell {
     
-    var weight: Int = 0
-    var reps: Int = 15
+    // TODO: увеличить хитбокс textfields
+    
+    public var setWorkout: WorkoutSet? {
+        didSet {
+            weightTextField.text = String(setWorkout?.weight ?? 0)
+            repsTextField.text = String(setWorkout?.reps ?? 0)
+        }
+    }
 
-    let container: UIView = {
+    private let container: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.clipsToBounds = true
         return v
     }()
     
-    let weightTextField: UITextField = {
+    private let weightTextField: UITextField = {
         let tf = UITextField()
         tf.tintColor = .black
         tf.textColor = .black
@@ -31,7 +37,7 @@ class SetCell: UITableViewCell {
         return tf
     }()
     
-    let repsTextField: UITextField = {
+    private let repsTextField: UITextField = {
         let tf = UITextField()
         tf.tintColor = .black
         tf.textColor = .black
@@ -42,7 +48,7 @@ class SetCell: UITableViewCell {
         return tf
     }()
     
-    let xLabel: UILabel = {
+    private let xLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.text = "x"
@@ -59,9 +65,6 @@ class SetCell: UITableViewCell {
         contentView.addSubview(container)
         container.addSubview(weightTextField)
         container.addSubview(repsTextField)
-        
-        weightTextField.text = String(weight)
-        repsTextField.text = String(reps)
         
         container.addSubview(xLabel)
 
@@ -114,5 +117,10 @@ extension SetCell: UITextFieldDelegate {
     // auto selection of text in textfield
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.selectAll(nil)
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if setWorkout != nil {
+            CoreDataManager.shared.updateWorkoutSet(set: setWorkout!, weight: Int(weightTextField.text ?? "0") ?? 0, reps: Int(repsTextField.text ?? "0") ?? 0)
+        }
     }
 }

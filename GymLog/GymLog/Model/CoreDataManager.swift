@@ -20,6 +20,14 @@ class CoreDataManager{
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     //MARK: CRUD for WorkoutSets
+    func addWorkoutSet(workout: Workout){
+        let set: WorkoutSet = WorkoutSet(context: self.context)
+        set.weight = 0
+        set.reps = 0
+        set.workout = workout
+        
+        save()
+    }
     func addWorkoutSet(workout: Workout, weight: Int64, reps: Int64){
         let set: WorkoutSet = WorkoutSet(context: self.context)
         set.weight = weight
@@ -50,9 +58,9 @@ class CoreDataManager{
         catch { }
         return sets
     }
-    func updateWorkoutSet(set: WorkoutSet, weight: Int64, reps: Int64){
-        set.weight = weight
-        set.reps = reps
+    func updateWorkoutSet(set: WorkoutSet, weight: Int, reps: Int){
+        set.weight = Int64(weight)
+        set.reps = Int64(reps)
         save()
     }
 

@@ -9,6 +9,8 @@ import UIKit
 
 class EditSetsViewController: UIViewController {
     
+    public var workout: Workout?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,7 +19,8 @@ class EditSetsViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
-        setupButtons()
+        setupTitle()
+        setupDoneButton()
         setupTableView()
         setupCreateButton()
     }
@@ -27,20 +30,43 @@ class EditSetsViewController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: Close/Done buttons
+    public var completion: (() -> Void)?
     
-    private let closeButton: UIButton = {
-        let btn = UIButton()
+    override func viewWillDisappear(_ animated: Bool) {
+        completion?()
+    }
+    
+    // MARK: Title
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textAlignment = .center
         
-        let icon = UIImage(systemName: "xmark")
-        btn.setImage(icon, for: .normal)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         
-        btn.tintColor = .black
-        btn.setTitleColor(.black, for: .normal)
-        
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
+    
+    private func setupTitle(){
+        view.addSubview(titleLabel)
+        
+        titleLabel.sizeToFit()
+        
+        titleLabel.text = workout?.exercise?.name
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 70),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70)
+        ])
+    }
+    
+    // MARK: Done button
     
     private let doneButton: UIButton = {
         let btn = UIButton()
@@ -55,25 +81,13 @@ class EditSetsViewController: UIViewController {
         return btn
     }()
     
-    @objc func closeButtonTapped(){
-        self.dismiss(animated: true)
-    }
-    
     @objc func doneButtonTapped(){
         self.dismiss(animated: true)
     }
 
-    private func setupButtons(){
-        
-        view.addSubview(closeButton)
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
-        ])
-        
+    private func setupDoneButton(){
         view.addSubview(doneButton)
+        
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -84,6 +98,19 @@ class EditSetsViewController: UIViewController {
     
     // MARK: TableView
     
+    private var setsWorkout: [WorkoutSet]?
+    
+    private var tableViewHeightConstraint: NSLayoutConstraint!
+    
+    private func getSets(){
+        if workout != nil {
+            setsWorkout = CoreDataManager.shared.fetchWorkoutSets(workout: workout!)
+            tableViewHeightConstraint.constant = 50*CGFloat(setsWorkout?.count ?? 0)
+            tableView.layoutIfNeeded()
+            tableView.reloadData()
+        }
+    }
+    
     private let tableView: UITableView = {
         let tv = UITableView()
         
@@ -92,6 +119,7 @@ class EditSetsViewController: UIViewController {
     }()
     
     private func setupTableView(){
+        
         view.addSubview(tableView)
         
         tableView.register(SetCell.self, forCellReuseIdentifier: "setcell")
@@ -104,12 +132,16 @@ class EditSetsViewController: UIViewController {
         
         tableView.layoutIfNeeded()
         
+        tableViewHeightConstraint = NSLayoutConstraint(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50)
+        tableView.addConstraint(tableViewHeightConstraint)
+        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 65),
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 25),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.heightAnchor.constraint(equalToConstant: 50*3)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
+        
+        getSets()
     }
     
     //MARK: CreateButton
@@ -141,18 +173,22 @@ class EditSetsViewController: UIViewController {
     }
     
     @objc func createButtonTapped(){
-        
+        if workout != nil {
+            CoreDataManager.shared.addWorkoutSet(workout: workout!)
+            getSets()
+        }
     }
     
-    private func handleDelete(){
-        
+    private func handleDelete(setw: WorkoutSet?){
+        if setw != nil{ CoreDataManager.shared.delete(obj: setw!) }
+        getSets()
     }
 }
 
 extension EditSetsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // максимум 8 подходов может быть
-        return 3
+        return setsWorkout?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -161,6 +197,8 @@ extension EditSetsViewController: UITableViewDelegate, UITableViewDataSource{
         cell.selectionStyle = .none
         
         cell.turnOnEditing()
+        
+        cell.setWorkout = setsWorkout?[indexPath.row]
         
         return cell
     }
@@ -172,7 +210,7 @@ extension EditSetsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
-            self?.handleDelete()
+            self?.handleDelete(setw: self?.setsWorkout?[indexPath.row])
             completionHandler(true)
         }
         

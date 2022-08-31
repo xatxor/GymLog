@@ -319,9 +319,17 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         ])
     }
     // open editsets menu
-    func setsTableViewTapped(){
+    func setsTableViewTapped(workout: Workout?){
         let vc = EditSetsViewController()
-        navigationController?.present(vc, animated: true)
+        if workout != nil {
+            vc.workout = workout
+            vc.completion = {
+                self.tableView.reloadData()
+            }
+            navigationController?.present(vc, animated: true)
+        }
+        // TODO: обработчик ошибки
+        else {}
     }
 }
 
@@ -344,7 +352,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         //если ячейка выбрана, увеличиваем ее высоту
         if selectedIndex == indexPath
         {
-            let height = 60 + 3*50 + 10 + 10
+            let countOfSets = workouts?[indexPath.row].sets?.count ?? 0
+            if countOfSets == 0 { return 60 + 40 }
+            let height = 60 + 50 * Float16(countOfSets)
             return CGFloat(height)
         }
         return 60
@@ -361,6 +371,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.delegate = self
         
         cell.exercise = self.workouts?[indexPath.row].exercise
+        cell.workout = self.workouts?[indexPath.row]
         
         return cell
     }
@@ -394,15 +405,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        //при свайпе скрываем раскрытую ячейку для хорошего отображения анимации
-        if indexPath == selectedIndex {
-            selectedIndex = IndexPath(row: -1, section: -1)
-            //обновляем выбранную ячейку для того чтобы обновилась высота
-            tableView.beginUpdates()
-            tableView.reloadRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
-        }
-        
         let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
             self?.handleStatistics()
             completionHandler(true)
@@ -416,16 +418,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        //при свайпе скрываем раскрытую ячейку для хорошего отображения анимации
-        if indexPath == selectedIndex {
-            selectedIndex = IndexPath(row: -1, section: -1)
-            //обновляем выбранную ячейку для того чтобы обновилась высота
-            tableView.beginUpdates()
-            tableView.reloadRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
-        }
-        
+
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
             self?.handleDelete(workout: self?.workouts?[indexPath.row])
             completionHandler(true)
