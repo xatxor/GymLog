@@ -18,6 +18,8 @@ class ExercisesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.backButtonTitle = ""
+        
         view.backgroundColor = .white
         
         if isSelectionEnable{ setupSelectionLabel() }

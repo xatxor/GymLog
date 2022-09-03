@@ -32,9 +32,11 @@ class SettingsViewController: UIViewController {
     
     private func deleteDB(){
         let vc = DeleteConfirmationViewController()
-        vc.completion = { isOkay in
-            if isOkay{
+        vc.completion = { [weak self] isOkay in
+            if isOkay {
                 CoreDataManager.shared.deleteAll()
+                NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
+                self?.navigationController?.popToRootViewController(animated: true)
             }
         }
         navigationController?.present(vc, animated: true)
@@ -72,7 +74,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = "Delete database"
+        cell.textLabel?.text = "Delete all folders and exercises"
         cell.textLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         cell.selectionStyle = .none
         

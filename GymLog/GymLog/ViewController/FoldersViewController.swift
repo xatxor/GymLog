@@ -98,6 +98,8 @@ class FoldersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.backButtonTitle = ""
+        
         view.backgroundColor = .white
         
         drawDottedLines()

@@ -133,6 +133,7 @@ class NameSetterViewController: UIViewController {
 
         view.addSubview(textfield)
         
+        textfield.delegate = self
         textfield.becomeFirstResponder()
         textfield.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 
@@ -142,5 +143,17 @@ class NameSetterViewController: UIViewController {
             textfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             textfield.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+}
+extension NameSetterViewController: UITextFieldDelegate {
+    //ограничиваем количество символов в имени в 28 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard let textFieldText = textfield.text,
+                let rangeOfTextToReplace = Range(range, in: textFieldText) else {
+                    return false }
+        let substringToReplace = textFieldText[rangeOfTextToReplace]
+        let count = textFieldText.count - substringToReplace.count + string.count
+        return count <= 28
     }
 }

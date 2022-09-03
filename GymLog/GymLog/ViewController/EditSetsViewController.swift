@@ -21,6 +21,7 @@ class EditSetsViewController: UIViewController {
         
         setupTitle()
         setupDoneButton()
+        setupLabels()
         setupTableView()
         setupCreateButton()
     }
@@ -96,6 +97,49 @@ class EditSetsViewController: UIViewController {
         ])
     }
     
+    // MARK: Weight/Reps labels
+    
+    private let weightLabel: UILabel = {
+        let tf = UILabel()
+        
+        tf.text = "weight"
+        tf.tintColor = .black
+        tf.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        tf.font = .systemFont(ofSize: 16, weight: .regular)
+        tf.textAlignment = .center
+        
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    private let repsLabel: UILabel = {
+        let tf = UILabel()
+        
+        tf.text = "reps"
+        tf.tintColor = .black
+        tf.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        tf.font = .systemFont(ofSize: 16, weight: .regular)
+        tf.textAlignment = .center
+        
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
+    }()
+    
+    private func setupLabels(){
+        view.addSubview(weightLabel)
+        view.addSubview(repsLabel)
+        
+        NSLayoutConstraint.activate([
+            weightLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 25),
+            weightLabel.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor, constant: -75)
+        ])
+        
+        NSLayoutConstraint.activate([
+            repsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 25),
+            repsLabel.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor, constant: 75)
+        ])
+    }
+    
     // MARK: TableView
     
     private var setsWorkout: [WorkoutSet]?
@@ -136,7 +180,7 @@ class EditSetsViewController: UIViewController {
         tableView.addConstraint(tableViewHeightConstraint)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 25),
+            tableView.topAnchor.constraint(equalTo: weightLabel.bottomAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
