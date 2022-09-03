@@ -31,7 +31,7 @@ class WorkoutCell: UITableViewCell{
         }
     }
     
-    public var setsWorkout: [WorkoutSet]?
+    private var setsWorkout: [WorkoutSet]?
     
     private func getSets(){
         if workout != nil {
@@ -136,8 +136,6 @@ class WorkoutCell: UITableViewCell{
         tableView.addGestureRecognizer(tap)
 
         title.text = String(setsWorkout?.count ?? 0)
-        
-        getSets()
     }
     
     @objc func tableViewTapped(){
@@ -185,12 +183,15 @@ extension WorkoutCell: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "setcell", for: indexPath) as! SetCell
-        cell.selectionStyle = .none
         
-        // здесь вылезает ошибка
-        cell.setWorkout = setsWorkout?[indexPath.row]
-        return cell
+        if indexPath.row > (setsWorkout?.count ?? 0) - 1 {
+            return UITableViewCell()
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "setcell", for: indexPath) as! SetCell
+            cell.selectionStyle = .none
+            cell.setWorkout = setsWorkout?[indexPath.row]
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
