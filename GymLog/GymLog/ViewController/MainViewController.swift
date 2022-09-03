@@ -47,7 +47,9 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
 
-        let icon = UIImage(systemName: "book")
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 20, weight: .regular, scale: .default)
+        let icon = UIImage(systemName: "book", withConfiguration: config)
         button.setImage(icon, for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +61,9 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         
-        let icon = UIImage(systemName: "wrench")
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 20, weight: .regular, scale: .default)
+        let icon = UIImage(systemName: "gear", withConfiguration: config)
         button.setImage(icon, for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -109,8 +113,11 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     private let showHideButton: UIButton = {
         let button = UIButton()
         
-        button.setTitle("open", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        //button.setTitle("open", for: .normal)
+        //button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: "chevron.compact.down"), for: .normal)
         
         button.backgroundColor = .clear
         button.layer.cornerRadius = 7
@@ -123,10 +130,10 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     private func changeShowHideButtonTitle(){
         // TODO: добавить анимацию
-        if showHideButton.titleLabel?.text == "open"{
-            showHideButton.setTitle("hide", for: .normal)
+        if calendar.scope == .week {
+            showHideButton.setImage(UIImage(systemName: "chevron.compact.down"), for: .normal)
         } else {
-            showHideButton.setTitle("open", for: .normal)
+            showHideButton.setImage(UIImage(systemName: "chevron.compact.up"), for: .normal)
         }
     }
     
@@ -208,7 +215,8 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 2),
             showHideButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            showHideButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            showHideButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            showHideButton.heightAnchor.constraint(equalToConstant: 28)
         ])
     }
     
@@ -241,13 +249,14 @@ class MainViewController: UIViewController, EditSetCellProtocol {
 
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .black
+        button.tintColor = .darkGray
         
-        button.layer.cornerRadius = 25
-        button.layer.borderWidth = 2
-        button.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
-        let icon = UIImage(systemName: "plus")
+        button.layer.cornerRadius = 30
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 22, weight: .medium, scale: .default)
+        let icon = UIImage(systemName: "plus", withConfiguration: config)
         button.setImage(icon, for: .normal)
 
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -263,8 +272,8 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         NSLayoutConstraint.activate([
             addButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -60),
             addButton.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -50),
-            addButton.heightAnchor.constraint(equalToConstant: 55),
-            addButton.widthAnchor.constraint(equalToConstant: 55)
+            addButton.heightAnchor.constraint(equalToConstant: 60),
+            addButton.widthAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -408,11 +417,17 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
+        let statisticsAction = UIContextualAction(style: .normal, title: ""){ [weak self] (action, view, completionHandler) in
             self?.handleStatistics(exercise: self?.workouts?[indexPath.row].exercise)
             completionHandler(true)
         }
         statisticsAction.backgroundColor = #colorLiteral(red: 0.834133327, green: 0.834133327, blue: 0.834133327, alpha: 1)
+        
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 18, weight: .regular, scale: .default)
+        let icon = UIImage(systemName: "chart.bar.fill", withConfiguration: config)
+        
+        statisticsAction.image = icon
         
         let configuration = UISwipeActionsConfiguration(actions: [statisticsAction])
         configuration.performsFirstActionWithFullSwipe = false
@@ -422,10 +437,15 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: ""){ [weak self] (action, view, completionHandler) in
             self?.handleDelete(workout: self?.workouts?[indexPath.row])
             completionHandler(true)
         }
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 18, weight: .regular, scale: .default)
+        let icon = UIImage(systemName: "trash", withConfiguration: config)
+        
+        deleteAction.image = icon
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         configuration.performsFirstActionWithFullSwipe = false

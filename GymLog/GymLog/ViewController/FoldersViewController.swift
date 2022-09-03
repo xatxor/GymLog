@@ -196,7 +196,7 @@ class FoldersViewController: UIViewController {
     private let createButton: UIButton = {
         let button = UIButton()
         
-        button.setTitle("create new folder", for: .normal)
+        button.setTitle("+ folder", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         
         button.backgroundColor = .clear
@@ -358,16 +358,27 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         if !isSelectionEnable {
-            let deleteAction = UIContextualAction(style: .destructive, title: "Delete"){ [weak self] (action, view, completionHandler) in
+            let deleteAction = UIContextualAction(style: .destructive, title: ""){ [weak self] (action, view, completionHandler) in
                 self?.handleDelete(folder: self?.folders[indexPath.row])
                 completionHandler(true)
             }
+            let config = UIImage.SymbolConfiguration(
+                pointSize: 18, weight: .regular, scale: .default)
+            let icon = UIImage(systemName: "trash", withConfiguration: config)
             
-            let editAction = UIContextualAction(style: .normal, title: "Edit"){ [weak self] (action, view, completionHandler) in
+            deleteAction.image = icon
+            
+            let editAction = UIContextualAction(style: .normal, title: ""){ [weak self] (action, view, completionHandler) in
                 self?.handleEdit(folder: self?.folders[indexPath.row])
                 completionHandler(true)
             }
             editAction.backgroundColor = #colorLiteral(red: 0.659389317, green: 0.8405041099, blue: 1, alpha: 1)
+            
+            let config2 = UIImage.SymbolConfiguration(
+                pointSize: 18, weight: .regular, scale: .default)
+            let icon2 = UIImage(systemName: "square.and.pencil", withConfiguration: config2)
+
+            editAction.image = icon2
             
             let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
             configuration.performsFirstActionWithFullSwipe = false
