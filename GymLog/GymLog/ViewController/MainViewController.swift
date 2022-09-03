@@ -398,15 +398,18 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         getWorkouts()
     }
     
-    private func handleStatistics() {
-        let vc = StatisticsViewController()
-        navigationController?.pushViewController(vc, animated: true)
+    private func handleStatistics(exercise: Exercise?) {
+        if exercise != nil {
+            let vc = StatisticsViewController()
+            vc.exercise = exercise
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let statisticsAction = UIContextualAction(style: .normal, title: "Statistics"){ [weak self] (action, view, completionHandler) in
-            self?.handleStatistics()
+            self?.handleStatistics(exercise: self?.workouts?[indexPath.row].exercise)
             completionHandler(true)
         }
         statisticsAction.backgroundColor = #colorLiteral(red: 0.834133327, green: 0.834133327, blue: 0.834133327, alpha: 1)

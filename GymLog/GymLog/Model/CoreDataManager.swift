@@ -95,6 +95,22 @@ class CoreDataManager{
         catch { }
         return workouts
     }
+    func fetchWorkoutsSorted(exercise: Exercise)->[Workout]{
+        var workouts: [Workout] = []
+        do {
+            let request = Workout.fetchRequest() as NSFetchRequest<Workout>
+            
+            let pred = NSPredicate(format: "exercise == %@", exercise)
+            let sort = NSSortDescriptor(key: #keyPath(Workout.date), ascending: false)
+            
+            request.predicate = pred
+            request.sortDescriptors = [sort]
+            
+            workouts = try context.fetch(request)
+        }
+        catch { }
+        return workouts
+    }
     //получаем все workouts определенной даты
     func fetchWorkouts(date: Date)->[Workout]{
         var workouts: [Workout] = []
