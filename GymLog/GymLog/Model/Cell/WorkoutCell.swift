@@ -146,7 +146,7 @@ class WorkoutCell: UITableViewCell{
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            title.heightAnchor.constraint(equalToConstant: 20)
+            title.heightAnchor.constraint(equalToConstant: 25)
         ])
         
         NSLayoutConstraint.activate([

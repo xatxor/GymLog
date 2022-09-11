@@ -334,6 +334,7 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
                     CoreDataManager.shared.delete(array: exes)
                     CoreDataManager.shared.delete(obj: folder!)
                     self?.getFolders()
+                    self?.getExercises()
                     NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 }
             }

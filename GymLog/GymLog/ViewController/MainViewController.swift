@@ -19,6 +19,8 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     // TODO: может добавить свайпы удаления/редактирования даже при добавлении workout ???
     
+    // TODO: добавить картинки на фон при отсутствии данных
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -362,11 +364,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         if selectedIndex == indexPath
         {
             let countOfSets = workouts?[indexPath.row].sets?.count ?? 0
-            if countOfSets == 0 { return 60 + 40 }
-            let height = 60 + 50 * Float16(countOfSets)
+            if countOfSets == 0 { return 65 + 40 }
+            let height = 65 + 50 * Float16(countOfSets)
             return CGFloat(height)
         }
-        return 60
+        return 65
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

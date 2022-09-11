@@ -134,12 +134,13 @@ class CoreDataManager{
     }
     
     //MARK: CRUD for Exercises
-    func addExercise(name: String, folder: Folder){
+    func addExercise(name: String, folder: Folder)->Exercise{
         let ex = Exercise(context: self.context)
         ex.name = name
         ex.folder = folder
         
         save()
+        return ex
     }
     func fetchExercises()->[Exercise]{
         var exercises: [Exercise] = []

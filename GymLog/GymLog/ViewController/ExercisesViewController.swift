@@ -163,8 +163,15 @@ class ExercisesViewController: UIViewController {
         vc.completion = { [weak self] name in
             DispatchQueue.main.async {
                 if self?.folder != nil {
-                    CoreDataManager.shared.addExercise(name: name ?? "Default name", folder: (self?.folder)!)
+                    let ex = CoreDataManager.shared.addExercise(name: name ?? "Default name", folder: (self?.folder)!)
                     self?.getExercises()
+                    
+                    if self!.isSelectionEnable{
+                        self?.selectedExercises.append(ex)
+                        self?.checkIfDoneButtonVisible()
+                        self?.updateSelectionLabel()
+                        self?.selectRows()
+                    }
                 }
             }
         }
@@ -242,7 +249,7 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 65
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
