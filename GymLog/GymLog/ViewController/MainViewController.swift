@@ -190,14 +190,18 @@ class MainViewController: UIViewController, EditSetCellProtocol {
         calendar.delegate = self
         
         calendar.scope = .week
-        calendar.appearance.headerTitleColor = UIColor.black
-        calendar.appearance.weekdayTextColor = UIColor.black
-        calendar.appearance.todaySelectionColor = UIColor.darkGray
-        calendar.appearance.todayColor = UIColor.darkGray
-        calendar.appearance.selectionColor = UIColor.gray
-        calendar.appearance.weekdayFont = UIFont.systemFont(ofSize: 16)
-        calendar.appearance.titleFont = UIFont.boldSystemFont(ofSize: 20)
+        calendar.appearance.eventOffset = CGPoint(x: 0, y: 3)
+        calendar.appearance.eventDefaultColor = .darkGray
+        calendar.appearance.eventSelectionColor = .black
+        calendar.appearance.headerTitleColor = .black
+        calendar.appearance.weekdayTextColor = .black
+        calendar.appearance.todaySelectionColor = .darkGray
+        calendar.appearance.todayColor = .darkGray
+        calendar.appearance.selectionColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        calendar.appearance.weekdayFont = .systemFont(ofSize: 16)
+        calendar.appearance.titleFont = .boldSystemFont(ofSize: 20)
         calendar.headerHeight = 0
+        calendar.firstWeekday = 2
         
         calendarHeightConstraint = NSLayoutConstraint(item: calendar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 400)
         calendar.addConstraint(calendarHeightConstraint)
@@ -306,6 +310,7 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     @objc func reloadWorkouts(){
         getWorkouts()
+        calendar.reloadData()
     }
     
     private func setupTableView(){
@@ -352,6 +357,12 @@ extension MainViewController: FSCalendarDataSource, FSCalendarDelegate {
         selectedDate = date
         getWorkouts()
         setTitle()
+    }
+    
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        let ws = CoreDataManager.shared.fetchWorkouts(date: date)
+        if ws.count == 0 { return 0 }
+        else { return 1 }
     }
 }
 
@@ -405,6 +416,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             CoreDataManager.shared.delete(obj: workout!)
         }
         getWorkouts()
+        calendar.reloadData()
     }
     
     private func handleStatistics(exercise: Exercise?) {
