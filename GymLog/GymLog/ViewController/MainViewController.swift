@@ -17,8 +17,6 @@ class MainViewController: UIViewController, EditSetCellProtocol {
     
     // TODO: добавить анимации ко всем кнопкам
     
-    // TODO: может добавить свайпы удаления/редактирования даже при добавлении workout ???
-    
     // TODO: добавить картинки на фон при отсутствии данных
     
     override func viewDidLoad() {

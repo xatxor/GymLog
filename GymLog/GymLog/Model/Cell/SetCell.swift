@@ -10,8 +10,6 @@ import UIKit
 
 class SetCell: UITableViewCell {
     
-    // TODO: увеличить хитбокс textfields
-    
     public var setWorkout: WorkoutSet? {
         didSet {
             weightTextField.text = String(setWorkout?.weight ?? 0)
@@ -104,11 +102,13 @@ class SetCell: UITableViewCell {
         NSLayoutConstraint.activate([
             weightTextField.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
             weightTextField.centerXAnchor.constraint(equalTo: xLabel.leadingAnchor, constant: -70),
+            weightTextField.widthAnchor.constraint(equalToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
             repsTextField.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
             repsTextField.centerXAnchor.constraint(equalTo: xLabel.trailingAnchor, constant: 70),
+            repsTextField.widthAnchor.constraint(equalToConstant: 50)
         ])
     }
 }

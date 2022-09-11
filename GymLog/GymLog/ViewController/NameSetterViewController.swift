@@ -9,8 +9,6 @@ import UIKit
 
 class NameSetterViewController: UIViewController {
     
-    // TODO: в placeholder писать значение старого имени для случаев, когда этот vc используется для обновления имени а не для его установки
-    
     private var keyboardHeight = CGFloat()
 
     override func viewDidLoad() {
