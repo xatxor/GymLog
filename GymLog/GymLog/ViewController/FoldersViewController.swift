@@ -9,8 +9,6 @@ import UIKit
 
 class FoldersViewController: UIViewController {
     
-    // TODO: добавить кнопку добавления exercise -> добавить доп вид в NameSetterViewController для выбора папки
-    
    // MARK: Selection mode
     
     public var selectedExercises = [Exercise]()
@@ -344,6 +342,7 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource{
     
     private func handleEdit(folder: Folder?) {
         let vc = NameSetterViewController()
+        vc.placeholder = folder?.name
         vc.completion = { [weak self] name in
             DispatchQueue.main.async {
                 if folder != nil{

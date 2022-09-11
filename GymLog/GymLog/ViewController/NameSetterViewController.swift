@@ -45,6 +45,8 @@ class NameSetterViewController: UIViewController {
                         self.view.layer.masksToBounds = true
     }
     
+    public var placeholder: String?
+    
     private let textfield: UITextField = {
         let tf = UITextField()
         tf.font = .systemFont(ofSize: 18, weight: .bold)
@@ -132,6 +134,8 @@ class NameSetterViewController: UIViewController {
         ])
 
         view.addSubview(textfield)
+        
+        if placeholder != nil{ textfield.text = placeholder }
         
         textfield.delegate = self
         textfield.becomeFirstResponder()

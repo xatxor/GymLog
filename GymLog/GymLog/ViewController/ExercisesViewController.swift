@@ -303,6 +303,7 @@ extension ExercisesViewController: UITableViewDelegate, UITableViewDataSource{
     
     private func handleEdit(exercise: Exercise?) {
         let vc = NameSetterViewController()
+        vc.placeholder = exercise?.name
         vc.completion = { [weak self] name in
             DispatchQueue.main.async {
                 if exercise != nil{
