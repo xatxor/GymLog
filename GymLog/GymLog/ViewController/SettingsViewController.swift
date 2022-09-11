@@ -35,6 +35,7 @@ class SettingsViewController: UIViewController {
         vc.completion = { [weak self] isOkay in
             if isOkay {
                 CoreDataManager.shared.deleteAll()
+                CoreDataManager.shared.addDefaultData()
                 NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
                 self?.navigationController?.popToRootViewController(animated: true)
             }

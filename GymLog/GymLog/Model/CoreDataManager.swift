@@ -170,10 +170,12 @@ class CoreDataManager{
     }
     
     //MARK: CRUD for Folders
-    func addFolder(name: String){
+    func addFolder(name: String)->Folder{
         let folder: Folder = Folder(context: self.context)
         folder.name = name
         save()
+        
+        return folder
     }
     func fetchFolders()->[Folder]{
         var folder: [Folder] = []
@@ -235,5 +237,30 @@ class CoreDataManager{
             try self.context.save()
         }
         catch { }
+    }
+    
+    func addDefaultData(){
+        var exercises: [String]
+        var folder: Folder
+        
+        folder = addFolder(name: "Руки")
+        exercises = ["Разведение гантелей стоя", "Разгибание рук из-за головы","Жим гантелей стоя", "Подъем на бицепс", "Тяга гантелей к подбородку"]
+        for ex in exercises{ addExercise(name: ex, folder: folder) }
+        
+        folder = addFolder(name: "Ноги")
+        exercises = ["Приседания", "Выпады", "Жим ногами в тренажере", "Сведение ног в тренажере", "Разведение ног в тренажере"]
+        for ex in exercises{ addExercise(name: ex, folder: folder) }
+        
+        folder = addFolder(name: "Грудь")
+        exercises = ["Жим лежа", "Отжимания","Отжимания на брусьях", "Сведение рук в тренажере", "Жим сидя в тренажере"]
+        for ex in exercises{ addExercise(name: ex, folder: folder) }
+        
+        folder = addFolder(name: "Спина")
+        exercises = ["Тяга верхнего блока", "Тяга нижнего блока", "Тяга штанги в наклоне", "Подтягивания", "Гиперэкстензия"]
+        for ex in exercises{ addExercise(name: ex, folder: folder) }
+        
+        folder = addFolder(name: "Пресс")
+        exercises = ["Скручивания", "Косые скручивания","Подъемы ног", "Велосипед", "Ножницы"]
+        for ex in exercises{ addExercise(name: ex, folder: folder) }
     }
 }
