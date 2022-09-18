@@ -218,7 +218,7 @@ class EditSetsViewController: UIViewController {
     
     @objc func createButtonTapped(){
         if workout != nil {
-            CoreDataManager.shared.addWorkoutSet(workout: workout!)
+            CoreDataManager.shared.addWorkoutSet(workout: workout!, weight: setsWorkout?.last?.weight ?? 0, reps: setsWorkout?.last?.reps ?? 0)
             getSets()
         }
     }

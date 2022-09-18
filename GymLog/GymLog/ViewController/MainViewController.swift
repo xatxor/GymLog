@@ -10,14 +10,13 @@ import FSCalendar
 
 class MainViewController: UIViewController, EditSetCellProtocol {
     
-    // TODO: добавить под календарем view с оценкой своей тренировки по цветной пятибальной шкале,
-    // потом на календаре отмечать дни цветов соответствующим оценке
-    
     // TODO: добавить программы тренировок
     
-    // TODO: добавить анимации ко всем кнопкам
+    // TODO: анимации
     
     // TODO: добавить картинки на фон при отсутствии данных
+    
+    // TODO: многострочные названия упражнений
     
     override func viewDidLoad() {
         super.viewDidLoad()

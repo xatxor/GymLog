@@ -110,7 +110,7 @@ class DeleteConfirmationViewController: UIViewController {
             cancelButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 45),
             cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             cancelButton.heightAnchor.constraint(equalToConstant: 70),
-            cancelButton.widthAnchor.constraint(equalToConstant: 140)
+            cancelButton.widthAnchor.constraint(equalToConstant: 130)
         ])
         
         view.addSubview(deleteButton)
@@ -121,7 +121,7 @@ class DeleteConfirmationViewController: UIViewController {
             deleteButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 45),
             deleteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             deleteButton.heightAnchor.constraint(equalToConstant: 70),
-            deleteButton.widthAnchor.constraint(equalToConstant: 140)
+            deleteButton.widthAnchor.constraint(equalToConstant: 130)
         ])
     }
     
