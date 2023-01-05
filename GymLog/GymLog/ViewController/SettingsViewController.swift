@@ -11,10 +11,10 @@ class SettingsViewController: UIViewController {
     
     // вкл/выкл оценивание тренировки от 1 до 5
     // настроить вид и цвета оценивания тренировок
-    // удалить всю библиотеку тренировок
-    // добавить дефолтные папки и упражнения
     // скрыть/отобразить кардио папку
     // настроить цвета тренировок
+    
+    // переделать settings потому что сделан криво
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +26,25 @@ class SettingsViewController: UIViewController {
         title = "Settings"
     }
     
+    private var settings: [String]?
+    
     private func configure(){
-        
+        settings = ["Delete all data and set defaults", "Delete all data"]
     }
     
     private func deleteDB(){
+        let vc = DeleteConfirmationViewController()
+        vc.completion = { [weak self] isOkay in
+            if isOkay {
+                CoreDataManager.shared.deleteAll()
+                NotificationCenter.default.post(name: NSNotification.Name("reloadWorkouts"), object: nil)
+                self?.navigationController?.popToRootViewController(animated: true)
+            }
+        }
+        navigationController?.present(vc, animated: true)
+    }
+    
+    private func resetDB(){
         let vc = DeleteConfirmationViewController()
         vc.completion = { [weak self] isOkay in
             if isOkay {
@@ -69,13 +83,13 @@ class SettingsViewController: UIViewController {
 }
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return settings?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = "Delete all folders and exercises"
+        cell.textLabel?.text = settings?[indexPath.row]
         cell.textLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         cell.selectionStyle = .none
         
@@ -83,6 +97,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        deleteDB()
+        if indexPath.row == 0{
+            resetDB()
+        }
+        else if indexPath.row == 1{
+            deleteDB()
+        }
     }
 }
